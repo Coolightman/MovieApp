@@ -8,35 +8,46 @@ import com.google.gson.reflect.TypeToken
 class Converters {
 
     @TypeConverter
-    fun listMovieToJson(movies: List<Movie>): String {
+    fun listMoviesToJson(movies: List<Movie>): String {
         return Gson().toJson(movies)
     }
 
     @TypeConverter
-    fun jsonToListMovie(json: String): List<Movie> {
+    fun jsonToListMovies(json: String): List<Movie> {
         val itemType = object : TypeToken<List<Movie>>() {}.type
         return Gson().fromJson(json, itemType)
     }
 
     @TypeConverter
-    fun listCountryToJson(countries: List<Country>): String {
+    fun listCountriesToJson(countries: List<Country>): String {
         return Gson().toJson(countries)
     }
 
     @TypeConverter
-    fun jsonToListCountry(json: String): List<Country> {
+    fun jsonToListCountries(json: String): List<Country> {
         val itemType = object : TypeToken<List<Country>>() {}.type
         return Gson().fromJson(json, itemType)
     }
 
     @TypeConverter
-    fun listGenreToJson(genres: List<Genre>): String {
+    fun listGenresToJson(genres: List<Genre>): String {
         return Gson().toJson(genres)
     }
 
     @TypeConverter
-    fun jsonToListGenre(json: String): List<Genre> {
+    fun jsonToListGenres(json: String): List<Genre> {
         val itemType = object : TypeToken<List<Genre>>() {}.type
+        return Gson().fromJson(json, itemType)
+    }
+
+    @TypeConverter
+    fun listVideosToJson(videos: List<Video>): String {
+        return Gson().toJson(videos)
+    }
+
+    @TypeConverter
+    fun jsonToListVideos(json: String): List<Video> {
+        val itemType = object : TypeToken<List<Video>>() {}.type
         return Gson().fromJson(json, itemType)
     }
 

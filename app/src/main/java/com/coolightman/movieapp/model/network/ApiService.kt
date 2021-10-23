@@ -1,6 +1,7 @@
 package com.coolightman.movieapp.model.network
 
 import com.coolightman.movieapp.model.data.*
+import com.coolightman.movieapp.model.data.response.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
