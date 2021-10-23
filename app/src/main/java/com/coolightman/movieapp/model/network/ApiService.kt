@@ -1,9 +1,6 @@
 package com.coolightman.movieapp.model.network
 
-import com.coolightman.movieapp.model.data.Frames
-import com.coolightman.movieapp.model.data.Movie
-import com.coolightman.movieapp.model.data.MovieDetails
-import com.coolightman.movieapp.model.data.Videos
+import com.coolightman.movieapp.model.data.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -29,7 +26,7 @@ interface ApiService {
     fun loadPageOfMovies(
         @Query(PARAM_TYPE) topType: String,
         @Query(PARAM_PAGE) page: Int
-    ): Call<List<Movie>>
+    ): Call<MoviesPage>
 
     @Headers(headerAccept, headerKey)
     @GET("v2.2/films/{id}")
@@ -42,4 +39,12 @@ interface ApiService {
     @Headers(headerAccept, headerKey)
     @GET("v2.2/films/{id}/videos")
     fun loadMovieVideos(@Path("id") movieId: Long): Call<Videos>
+
+    @Headers(headerAccept, headerKey)
+    @GET("v2.2/films/{id}/facts")
+    fun loadMovieFacts(@Path("id") movieId: Long): Call<Facts>
+
+    @Headers(headerAccept, headerKey)
+    @GET("v2.2/films/{id}/similars")
+    fun loadSimilarMovies(@Path("id") movieId: Long): Call<Similars>
 }

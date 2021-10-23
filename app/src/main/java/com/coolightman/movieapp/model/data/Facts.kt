@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Videos(
-    var total: Int,
-    var items: List<Video>
+data class Facts(
+    var total : Int,
+    var items : List<Fact>
 ){
     @PrimaryKey
     var movieId: Long = 0
