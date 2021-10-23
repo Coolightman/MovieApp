@@ -2,19 +2,15 @@ package com.coolightman.movieapp.model.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
 @Entity
-data class Movie(
+data class Favorite(
     @PrimaryKey
-    @SerializedName("filmId")
     val movieId: Long,
     val rating: String? = null,
-    @SerializedName("ratingVoteCount")
     val ratingCount: String? = null,
-    @SerializedName("posterUrlPreview")
     val preview: String? = null
-){
+) {
     var isFavourite: Boolean = false
     var placeTop100: String? = null
     var placeTop250: String? = null
