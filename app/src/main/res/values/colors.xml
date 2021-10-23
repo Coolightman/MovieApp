@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="ratingGreen">@android:color/holo_green_dark</color>
+    <color name="ratingGrey">@android:color/darker_gray</color>
+    <color name="ratingRed">@android:color/holo_red_dark</color>
 </resources>

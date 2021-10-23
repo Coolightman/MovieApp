@@ -32,17 +32,17 @@ abstract class MovieDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: MovieDatabase? = null
         private const val DB_NAME = "movieApp.db"
-    }
 
-    fun getDb(context: Context): MovieDatabase {
-        return INSTANCE ?: synchronized(this) {
-            val instance = Room.databaseBuilder(
-                context.applicationContext,
-                MovieDatabase::class.java,
-                DB_NAME
-            ).fallbackToDestructiveMigration().build()
-            INSTANCE = instance
-            return instance
+        fun getDb(context: Context): MovieDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    MovieDatabase::class.java,
+                    DB_NAME
+                ).fallbackToDestructiveMigration().build()
+                INSTANCE = instance
+                return instance
+            }
         }
     }
 }

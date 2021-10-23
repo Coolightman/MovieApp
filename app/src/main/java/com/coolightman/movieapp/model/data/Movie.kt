@@ -16,8 +16,6 @@ data class Movie(
     val preview: String? = null
 ){
     var isFavourite: Boolean = false
-    var placeTop100: String? = null
-    var placeTop250: String? = null
     var isDetailed: Boolean = false
     var poster: String? = null
     var nameOriginal: String? = null
