@@ -28,7 +28,7 @@
         android:paddingTop="1dp"
         android:paddingEnd="4dp"
         android:paddingBottom="1dp"
-        android:text="@string/text_view_rating_dev"
+        android:text="@string/test_string"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="gone"
