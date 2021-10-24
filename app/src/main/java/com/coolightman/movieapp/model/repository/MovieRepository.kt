@@ -23,15 +23,13 @@ class MovieRepository(application: Application) {
     private var top250DownloadedPages = 0
     private var topAwaitDownloadedPages = 0
 
+    private var topPopularTotalPages = 1
+    private var top250TotalPages = 1
+    private var topAwaitTotalPages = 1
+
     private var nextPage = 0
 
     private lateinit var topType: Top
-
-    companion object {
-        private const val TOP_POPULAR_TOTAL_PAGES = 5
-        private const val TOP_250_TOTAL_PAGES = 13
-        private const val TOP_AWAIT_TOTAL_PAGES = 1
-    }
 
     fun getMoviesTop(topType: Top): LiveData<List<Movie>> {
         this.topType = topType
@@ -96,11 +94,32 @@ class MovieRepository(application: Application) {
 
     private fun setMoviesPageInDb(response: Response<MoviesPage>, page: Int) {
         val list = response.body()?.movies
+        setTotalPages(response)
         list?.let {
             executor.execute {
                 val updatedList = setAdditionalFields(it, page)
                 database.movieDao().insertList(updatedList)
                 resetDownloadedPage(nextPage)
+            }
+        }
+    }
+
+    private fun setTotalPages(response: Response<MoviesPage>) {
+        when (topType) {
+            Top.TOP_100_POPULAR_FILMS -> {
+                if (topPopularTotalPages == 1) {
+                    topPopularTotalPages = response.body()?.pagesCount!!
+                }
+            }
+            Top.TOP_250_BEST_FILMS -> {
+                if (top250TotalPages == 1) {
+                    top250TotalPages = response.body()?.pagesCount!!
+                }
+            }
+            Top.TOP_AWAIT_FILMS -> {
+                if (topAwaitTotalPages == 1) {
+                    topAwaitTotalPages = response.body()?.pagesCount!!
+                }
             }
         }
     }
@@ -178,9 +197,9 @@ class MovieRepository(application: Application) {
 
     private fun getTotalPages(): Int {
         return when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> TOP_POPULAR_TOTAL_PAGES
-            Top.TOP_250_BEST_FILMS -> TOP_250_TOTAL_PAGES
-            Top.TOP_AWAIT_FILMS -> TOP_AWAIT_TOTAL_PAGES
+            Top.TOP_100_POPULAR_FILMS -> topPopularTotalPages
+            Top.TOP_250_BEST_FILMS -> top250TotalPages
+            Top.TOP_AWAIT_FILMS -> topAwaitTotalPages
         }
     }
 

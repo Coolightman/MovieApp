@@ -33,7 +33,7 @@ class TopActivity : AppCompatActivity() {
 
     companion object {
         private const val IMAGE_WIDTH = 360
-        private const val SCROLL_RESERVE_LOADER = 4
+        private const val SCROLL_LOADER_RESERVE = 4
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,7 +143,7 @@ class TopActivity : AppCompatActivity() {
     private fun getCheckedSum(): Int {
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
         val visibleItemCount = layoutManager.childCount
-        val reserve = SCROLL_RESERVE_LOADER
+        val reserve = SCROLL_LOADER_RESERVE
         return firstVisibleItemPosition + visibleItemCount + reserve
     }
 
