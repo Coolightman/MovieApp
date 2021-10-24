@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit
 
 class TopViewModel(application: Application) : AndroidViewModel(application) {
     private val movieRepository = MovieRepository(application)
-    private val executor = ExecutorService.getExecutor()
 
     private var topType = Top.TOP_100_POPULAR_FILMS
     private var topTypeTrigger = MutableLiveData<Top>()
@@ -39,10 +38,7 @@ class TopViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun clearMovieDb() {
-        executor.execute {
-            movieRepository.clearMovieDb()
-        }
+    fun refreshData() {
+        movieRepository.refreshData()
     }
-
 }

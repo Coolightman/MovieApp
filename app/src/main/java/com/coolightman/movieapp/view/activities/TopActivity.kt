@@ -27,9 +27,13 @@ class TopActivity : AppCompatActivity() {
     private lateinit var topType: Top
 
     private var isScrollDownloading = false
-    private var previousPopularTotalItemCount = 0
-    private var previous250TotalItemCount = 0
-    private var previousAwaitTotalItemCount = 0
+    private var prevPopularCount = 0
+    private var prev250Count = 0
+    private var prevAwaitCount = 0
+
+    private var resettingPrevPopularCount = 0
+    private var resettingPrev250Count = 0
+    private var resettingPrevAwaitCount = 0
 
     companion object {
         private const val IMAGE_WIDTH = 360
@@ -41,7 +45,6 @@ class TopActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_top)
         topViewModel = ViewModelProvider(this).get(TopViewModel::class.java)
-        topViewModel.clearMovieDb()
 
         createTopRecyclerView()
         createObservingData()
@@ -80,7 +83,9 @@ class TopActivity : AppCompatActivity() {
     private fun createObservingData() {
         topViewModel.getTopMovies().observe(this) {
             topAdapter.setMovies(it)
+            resetPreviousTotalItemCount()
             isScrollDownloading = false
+            spinnerTops.isEnabled = true
             progressBarLoading.visibility = GONE
         }
     }
@@ -88,6 +93,10 @@ class TopActivity : AppCompatActivity() {
     private fun listeners() {
         spinnerListener()
         scrollListener()
+
+        imageViewRefresh.setOnClickListener {
+            topViewModel.refreshData()
+        }
     }
 
     private fun spinnerListener() {
@@ -98,7 +107,7 @@ class TopActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                progressBarLoading.visibility = VISIBLE
+//                topAdapter.clearAdapter()
                 setCurrentTopType(position)
                 layoutManager.scrollToPosition(0)
             }
@@ -117,6 +126,7 @@ class TopActivity : AppCompatActivity() {
         }
         this.topType = topType
         topViewModel.setTopType(topType)
+        topAdapter.setTopType(topType)
     }
 
     private fun scrollListener() {
@@ -127,17 +137,28 @@ class TopActivity : AppCompatActivity() {
                     val totalItemCount = layoutManager.itemCount
                     val previousTotalItemCount = getPreviousTotal()
                     val checkedSum = getCheckedSum()
+
                     if (!isScrollDownloading &&
                         totalItemCount > previousTotalItemCount &&
                         checkedSum > totalItemCount
                     ) {
+                        Log.e("Scroll", "triggered")
                         isScrollDownloading = true
+                        spinnerTops.isEnabled = false
                         progressBarLoading.visibility = VISIBLE
-                        resetPreviousTotalItemCount(totalItemCount)
+                        setResettingPrevCount(totalItemCount)
                         topViewModel.loadNextPage()
                     }
                 }
             })
+    }
+
+    private fun setResettingPrevCount(totalItemCount: Int) {
+        when (topType) {
+            Top.TOP_100_POPULAR_FILMS -> resettingPrevPopularCount = totalItemCount
+            Top.TOP_250_BEST_FILMS -> resettingPrev250Count = totalItemCount
+            Top.TOP_AWAIT_FILMS -> resettingPrevAwaitCount = totalItemCount
+        }
     }
 
     private fun getCheckedSum(): Int {
@@ -149,17 +170,17 @@ class TopActivity : AppCompatActivity() {
 
     private fun getPreviousTotal(): Int {
         return when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> previousPopularTotalItemCount
-            Top.TOP_250_BEST_FILMS -> previous250TotalItemCount
-            Top.TOP_AWAIT_FILMS -> previousAwaitTotalItemCount
+            Top.TOP_100_POPULAR_FILMS -> prevPopularCount
+            Top.TOP_250_BEST_FILMS -> prev250Count
+            Top.TOP_AWAIT_FILMS -> prevAwaitCount
         }
     }
 
-    private fun resetPreviousTotalItemCount(totalItemCount: Int) {
+    private fun resetPreviousTotalItemCount() {
         when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> previousPopularTotalItemCount = totalItemCount
-            Top.TOP_250_BEST_FILMS -> previous250TotalItemCount = totalItemCount
-            Top.TOP_AWAIT_FILMS -> previousAwaitTotalItemCount = totalItemCount
+            Top.TOP_100_POPULAR_FILMS -> prevPopularCount = resettingPrevPopularCount
+            Top.TOP_250_BEST_FILMS -> prev250Count = resettingPrev250Count
+            Top.TOP_AWAIT_FILMS -> prevAwaitCount = resettingPrevAwaitCount
         }
     }
 

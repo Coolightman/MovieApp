@@ -12,14 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.coolightman.movieapp.R
 import com.coolightman.movieapp.model.data.Movie
+import com.coolightman.movieapp.model.enums.Top
 
 class TopAdapter(private val listener: (Movie) -> Unit) :
     RecyclerView.Adapter<TopAdapter.TopViewHolder>() {
 
     private var movies = listOf<Movie>()
+    private lateinit var topType: Top
 
-    class TopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class TopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val preview: ImageView = itemView.findViewById(R.id.imageViewPreview)
+        val number: TextView = itemView.findViewById(R.id.textViewNumber)
         val rating: TextView = itemView.findViewById(R.id.textViewRating)
         val favourite: ImageView = itemView.findViewById(R.id.imageViewFavourite)
     }
@@ -42,13 +45,24 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setMovies(list: List<Movie>){
+    fun setMovies(list: List<Movie>) {
         this.movies = list
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearAdapter(){
+        this.movies = emptyList()
+        notifyDataSetChanged()
+    }
+
+    fun setTopType(topType: Top) {
+        this.topType = topType
+    }
+
     private fun setItemView(movie: Movie, holder: TopViewHolder) {
         setImage(movie, holder)
+        setNumber(movie, holder)
         setRating(movie, holder)
         setFavourite(movie, holder)
     }
@@ -59,6 +73,17 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
             .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .into(holder.preview)
+    }
+
+    private fun setNumber(movie: Movie, holder: TopViewHolder) {
+        val number = when (topType) {
+            Top.TOP_100_POPULAR_FILMS -> "${movie.topPopularPlace}"
+            Top.TOP_250_BEST_FILMS -> "${movie.top250Place}"
+            Top.TOP_AWAIT_FILMS -> "${movie.topAwaitPlace}"
+        }
+        holder.number.setBackgroundResource(R.drawable.rounded_corner_number)
+        holder.number.visibility = VISIBLE
+        holder.number.text = number
     }
 
     private fun setRating(movie: Movie, holder: TopViewHolder) {

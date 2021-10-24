@@ -10,4 +10,5 @@
     <color name="ratingGreen">@android:color/holo_green_dark</color>
     <color name="ratingGrey">@android:color/darker_gray</color>
     <color name="ratingRed">@android:color/holo_red_dark</color>
+    <color name="numberBackground">#99000000</color>
 </resources>

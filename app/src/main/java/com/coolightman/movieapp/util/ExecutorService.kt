@@ -1,5 +1,8 @@
 package com.coolightman.movieapp.util
 
+import android.os.Handler
+import android.os.Looper
+import androidx.core.os.HandlerCompat
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
@@ -25,7 +28,14 @@ object ExecutorService {
         workQueue
     )
 
+    private val mainThreadHandler: Handler =
+        HandlerCompat.createAsync(Looper.getMainLooper())
+
     fun getExecutor(): ThreadPoolExecutor{
         return executorService
+    }
+
+    fun getHandler(): Handler{
+        return mainThreadHandler
     }
 }
