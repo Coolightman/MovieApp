@@ -2,6 +2,7 @@ package com.coolightman.movieapp.model.repository
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.MovieDetails
@@ -12,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailRepository(application: Application) {
+class DetailRepository(private val application: Application) {
 
     private val apiService = ApiFactory.getService()
     private val database = MovieDatabase.getDb(application)
@@ -46,6 +47,7 @@ class DetailRepository(application: Application) {
 
             override fun onFailure(call: Call<MovieDetails>, t: Throwable) {
                 Log.e("Call", "Call MovieDetails failure")
+                Toast.makeText(application, "Internet is disconnected", Toast.LENGTH_SHORT).show()
             }
         })
     }

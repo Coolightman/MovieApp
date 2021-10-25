@@ -156,7 +156,8 @@ class DetailActivity : AppCompatActivity() {
     private fun setSlogan() {
         val slogan = movie.slogan
         slogan?.let {
-            textViewSlogan.text = it
+            val text = "\"$it\""
+            textViewSlogan.text = text
             textViewSlogan.visibility = VISIBLE
         }
     }
