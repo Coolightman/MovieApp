@@ -8,11 +8,6 @@ import androidx.lifecycle.Transformations
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.enums.Top
 import com.coolightman.movieapp.model.repository.MovieRepository
-import com.coolightman.movieapp.util.ExecutorService
-import java.util.concurrent.BlockingQueue
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
 
 class TopViewModel(application: Application) : AndroidViewModel(application) {
     private val movieRepository = MovieRepository(application)
@@ -25,20 +20,21 @@ class TopViewModel(application: Application) : AndroidViewModel(application) {
         this.topTypeTrigger.value = topType
     }
 
-    fun getTopMovies(): LiveData<List<Movie>> {
+    fun getLiveDataTop(): LiveData<List<Movie>> {
         return Transformations.switchMap(topTypeTrigger) {
-            movieRepository.getMoviesTop(topType)
+            movieRepository.getTop(topType)
         }
     }
 
     fun loadNextPage() {
-        val isPageLoaded = movieRepository.loadNextPage()
-        if (!isPageLoaded){
-            this.topTypeTrigger.value = topType
-        }
+        movieRepository.loadNextPage()
     }
 
     fun refreshData() {
         movieRepository.refreshData()
+    }
+
+    fun getIsAllTopDownloaded(): MutableLiveData<Boolean> {
+        return movieRepository.getIsAllTopDownloaded()
     }
 }

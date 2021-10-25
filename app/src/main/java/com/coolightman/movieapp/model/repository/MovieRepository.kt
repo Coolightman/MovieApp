@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.response.MoviesPage
 import com.coolightman.movieapp.model.db.MovieDatabase
@@ -25,12 +26,19 @@ class MovieRepository(private val application: Application) {
     private var top250DownloadedPages = 0
     private var topAwaitDownloadedPages = 0
 
+    private var isAllTopDownloaded = MutableLiveData<Boolean>()
+
     private lateinit var topType: Top
 
-    fun getMoviesTop(topType: Top): LiveData<List<Movie>> {
+    companion object {
+        private const val TOP_POPULAR_TOTAL_PAGES = 5
+        private const val TOP_250_TOTAL_PAGES = 13
+        private const val TOP_AWAIT_TOTAL_PAGES = 1
+    }
+
+    fun getTop(topType: Top): LiveData<List<Movie>> {
         this.topType = topType
         getDownloadedPagesCount()
-
         val list = when (topType) {
             Top.TOP_100_POPULAR_FILMS -> database.movieDao().getAllPopular()
             Top.TOP_250_BEST_FILMS -> database.movieDao().getAll250()
@@ -45,54 +53,37 @@ class MovieRepository(private val application: Application) {
                 Top.TOP_100_POPULAR_FILMS -> {
                     val size = database.movieDao().getAllPopularCount()
                     topPopularDownloadedPages = size / 20
-                    Log.e("sizePop", "$size")
                 }
                 Top.TOP_250_BEST_FILMS -> {
                     val size = database.movieDao().getAll250Count()
                     top250DownloadedPages = size / 20
-                    Log.e("size250", "$size")
                 }
                 Top.TOP_AWAIT_FILMS -> {
                     val size = database.movieDao().getAllAwaitCount()
                     topAwaitDownloadedPages = size / 20
-                    Log.e("sizeAwait", "$size")
                 }
             }
             handler.post {
-                loadFirstData()
+                loadTopFirstData()
             }
         }
     }
 
-    private fun loadFirstData() {
+    private fun loadTopFirstData() {
         val downloadedPageNumber = getDownloadedPageNumber()
         if (downloadedPageNumber == 0) {
             loadNextPage()
         }
     }
 
-    fun loadNextPage(): Boolean {
+    fun loadNextPage() {
         val downloadedPage = getDownloadedPageNumber()
-        Log.e("downloadedPage", "$downloadedPage")
-
         val totalPages = getTotalPages()
-        val nextPage = downloadedPage + 1
-        Log.e("nextPage", "$nextPage<=$totalPages")
 
-        return if (nextPage <= totalPages) {
-            Log.e("LoadNextPage", "TRIGGERED")
-            loadPageOfMovies(topType, nextPage)
-            true
+        if (downloadedPage < totalPages) {
+            loadPageOfMovies(topType, downloadedPage + 1)
         } else {
-            false
-        }
-    }
-
-    private fun resetDownloadedPage(page: Int) {
-        when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> topPopularDownloadedPages = page
-            Top.TOP_250_BEST_FILMS -> top250DownloadedPages = page
-            Top.TOP_AWAIT_FILMS -> topAwaitDownloadedPages = page
+            isAllTopDownloaded.value = true
         }
     }
 
@@ -100,7 +91,6 @@ class MovieRepository(private val application: Application) {
         apiService.loadPageOfMovies(topType.name, page).enqueue(object : Callback<MoviesPage> {
             override fun onResponse(call: Call<MoviesPage>, response: Response<MoviesPage>) {
                 if (response.isSuccessful) {
-                    Log.i("Response", response.toString())
                     setMoviesPageInDb(response, page)
                 } else {
                     Log.e("Response", "Response MoviesPage is not successful")
@@ -110,6 +100,7 @@ class MovieRepository(private val application: Application) {
             override fun onFailure(call: Call<MoviesPage>, t: Throwable) {
                 Log.e("Call", "Call failure")
                 Toast.makeText(application, "Internet is disconnected", Toast.LENGTH_SHORT).show()
+                isAllTopDownloaded.value = true
             }
         })
     }
@@ -125,10 +116,19 @@ class MovieRepository(private val application: Application) {
         }
     }
 
+    private fun resetDownloadedPage(page: Int) {
+        when (topType) {
+            Top.TOP_100_POPULAR_FILMS -> topPopularDownloadedPages = page
+            Top.TOP_250_BEST_FILMS -> top250DownloadedPages = page
+            Top.TOP_AWAIT_FILMS -> topAwaitDownloadedPages = page
+        }
+    }
+
     private fun setAdditionalFields(movies: List<Movie>, page: Int): List<Movie> {
         val updatedFavList = setFavoritesFromDb(movies)
         val updatedTopNumberList = setTopNumbers(updatedFavList, page)
         val updatedList = setAnotherTopNumbers(updatedTopNumberList)
+        Log.i("updatedList", updatedList.toString())
         return updatedList
     }
 
@@ -198,9 +198,9 @@ class MovieRepository(private val application: Application) {
 
     private fun getTotalPages(): Int {
         return when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> 5
-            Top.TOP_250_BEST_FILMS -> 13
-            Top.TOP_AWAIT_FILMS -> 1
+            Top.TOP_100_POPULAR_FILMS -> TOP_POPULAR_TOTAL_PAGES
+            Top.TOP_250_BEST_FILMS -> TOP_250_TOTAL_PAGES
+            Top.TOP_AWAIT_FILMS -> TOP_AWAIT_TOTAL_PAGES
         }
     }
 
@@ -216,15 +216,15 @@ class MovieRepository(private val application: Application) {
         when (topType) {
             Top.TOP_100_POPULAR_FILMS -> executor.execute {
                 clearPopular()
-                handler.post { getMoviesTop(topType) }
+                handler.post { getTop(topType) }
             }
             Top.TOP_250_BEST_FILMS -> executor.execute {
                 clear250()
-                handler.post { getMoviesTop(topType) }
+                handler.post { getTop(topType) }
             }
             Top.TOP_AWAIT_FILMS -> executor.execute {
                 clearAwait()
-                handler.post { getMoviesTop(topType) }
+                handler.post { getTop(topType) }
             }
         }
     }
@@ -251,5 +251,9 @@ class MovieRepository(private val application: Application) {
             movie.topPopularPlace = 0
         }
         database.movieDao().insertList(movies)
+    }
+
+    fun getIsAllTopDownloaded(): MutableLiveData<Boolean> {
+        return isAllTopDownloaded
     }
 }

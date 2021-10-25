@@ -26,18 +26,15 @@ class TopActivity : AppCompatActivity() {
     private lateinit var topAdapter: TopAdapter
     private lateinit var topType: Top
 
-    private var isScrollDownloading = false
+    private var isDownloading = false
     private var prevPopularCount = 0
     private var prev250Count = 0
     private var prevAwaitCount = 0
 
-    private var resettingPrevPopularCount = 0
-    private var resettingPrev250Count = 0
-    private var resettingPrevAwaitCount = 0
-
     companion object {
         private const val IMAGE_WIDTH = 360
         private const val SCROLL_LOADER_RESERVE = 4
+        private const val MIN_COLUMN = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,8 +67,8 @@ class TopActivity : AppCompatActivity() {
         val displayWidth = resources.displayMetrics.widthPixels
         val columns = displayWidth / IMAGE_WIDTH
 
-        return if (columns > 2) columns
-        else 2
+        return if (columns > MIN_COLUMN) columns
+        else MIN_COLUMN
     }
 
     private fun onItemClickListener(it: Movie) {
@@ -81,19 +78,29 @@ class TopActivity : AppCompatActivity() {
     }
 
     private fun createObservingData() {
-        topViewModel.getTopMovies().observe(this) {
+        topViewModel.getLiveDataTop().observe(this) {
             topAdapter.setMovies(it)
-            resetPreviousTotalItemCount()
-            isScrollDownloading = false
-            spinnerTops.isEnabled = true
-            progressBarLoading.visibility = GONE
+            if (it.isNotEmpty()) {
+                resetPreviousTotalItemCount(it.size)
+            }
+            isNotDownloading()
+        }
+
+        topViewModel.getIsAllTopDownloaded().observe(this) {
+            if (it) {
+                progressBarLoading.visibility = GONE
+                spinnerTops.isEnabled = true
+            }
         }
     }
 
     private fun listeners() {
         spinnerListener()
         scrollListener()
+        refreshListener()
+    }
 
+    private fun refreshListener() {
         imageViewRefresh.setOnClickListener {
             topViewModel.refreshData()
         }
@@ -102,12 +109,8 @@ class TopActivity : AppCompatActivity() {
     private fun spinnerListener() {
         spinnerTops.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-//                topAdapter.clearAdapter()
                 setCurrentTopType(position)
                 layoutManager.scrollToPosition(0)
             }
@@ -138,27 +141,27 @@ class TopActivity : AppCompatActivity() {
                     val previousTotalItemCount = getPreviousTotal()
                     val checkedSum = getCheckedSum()
 
-                    if (!isScrollDownloading &&
+                    if (!isDownloading &&
                         totalItemCount > previousTotalItemCount &&
                         checkedSum > totalItemCount
                     ) {
-                        Log.e("Scroll", "triggered")
-                        isScrollDownloading = true
-                        spinnerTops.isEnabled = false
-                        progressBarLoading.visibility = VISIBLE
-                        setResettingPrevCount(totalItemCount)
+                        isDownloading()
                         topViewModel.loadNextPage()
                     }
                 }
             })
     }
 
-    private fun setResettingPrevCount(totalItemCount: Int) {
-        when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> resettingPrevPopularCount = totalItemCount
-            Top.TOP_250_BEST_FILMS -> resettingPrev250Count = totalItemCount
-            Top.TOP_AWAIT_FILMS -> resettingPrevAwaitCount = totalItemCount
-        }
+    private fun isDownloading() {
+        isDownloading = true
+        progressBarLoading.visibility = VISIBLE
+        spinnerTops.isEnabled = false
+    }
+
+    private fun isNotDownloading() {
+        isDownloading = false
+        progressBarLoading.visibility = GONE
+        spinnerTops.isEnabled = true
     }
 
     private fun getCheckedSum(): Int {
@@ -176,12 +179,11 @@ class TopActivity : AppCompatActivity() {
         }
     }
 
-    private fun resetPreviousTotalItemCount() {
+    private fun resetPreviousTotalItemCount(listSize: Int) {
         when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> prevPopularCount = resettingPrevPopularCount
-            Top.TOP_250_BEST_FILMS -> prev250Count = resettingPrev250Count
-            Top.TOP_AWAIT_FILMS -> prevAwaitCount = resettingPrevAwaitCount
+            Top.TOP_100_POPULAR_FILMS -> prevPopularCount = listSize - 20
+            Top.TOP_250_BEST_FILMS -> prev250Count = listSize - 20
+            Top.TOP_AWAIT_FILMS -> prevAwaitCount = listSize - 20
         }
     }
-
 }
