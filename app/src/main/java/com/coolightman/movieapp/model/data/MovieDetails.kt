@@ -11,7 +11,7 @@ data class MovieDetails(
     val year: String?,
     @SerializedName("filmLength")
     val length: Int?,
-    val genres: List<Genre>?,
-    val countries: List<Country>?,
+    val genres: List<Genre>,
+    val countries: List<Country>,
     val description: String?
 )

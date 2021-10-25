@@ -98,7 +98,7 @@ class MovieRepository(private val application: Application) {
             }
 
             override fun onFailure(call: Call<MoviesPage>, t: Throwable) {
-                Log.e("Call", "Call failure")
+                Log.e("Call", "Call MoviesPage failure")
                 Toast.makeText(application, "Internet is disconnected", Toast.LENGTH_SHORT).show()
                 isAllTopDownloaded.value = true
             }

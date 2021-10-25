@@ -6,6 +6,10 @@
     <string name="refresh_button_descr">refresh button</string>
     <string name="kinopoisk_button_text">Смотреть на Kinopoisk</string>
     <string name="content_descr_poster">poster</string>
+    <string name="text_view_yearL_text">Год:</string>
+    <string name="text_view_lengthL_text">Продолжительность:</string>
+    <string name="text_view_genreL_text">Жанр:</string>
+    <string name="text_view_countryL_text">Страна:</string>
     <string-array name="spinner_top_items">
         <item>Топ популярных</item>
         <item>Топ 250 Кинопоиск</item>

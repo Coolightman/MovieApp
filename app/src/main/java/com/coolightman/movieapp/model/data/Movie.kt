@@ -26,7 +26,7 @@ data class Movie(
     var slogan: String? = null
     var year: String? = null
     var length: Int? = null
-    var genres: List<Genre>? = null
-    var countries: List<Country>? = null
+    var genres: List<Genre> = emptyList()
+    var countries: List<Country> = emptyList()
     var description: String? = null
 }

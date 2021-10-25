@@ -12,6 +12,9 @@ interface MovieDao {
     @Query("select * from movie where movieId = :id")
     fun getMovie(id: Long): Movie?
 
+    @Query("select * from movie where movieId = :id")
+    fun getMovieLiveData(id: Long): LiveData<Movie>
+
     @Query("select * from movie where topPopularPlace > 0 order by topPopularPlace")
     fun getAllPopular(): LiveData<List<Movie>>
 

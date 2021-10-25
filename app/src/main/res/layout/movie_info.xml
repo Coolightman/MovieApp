@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/test_string"
+            android:text="@string/text_view_yearL_text"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,12 +84,12 @@
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/textViewFilmLengthL"
+            android:id="@+id/textViewLengthL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/test_string"
+            android:text="@string/text_view_lengthL_text"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewFilmLengthL"
+            app:layout_constraintTop_toTopOf="@+id/textViewLengthL"
             tools:visibility="visible" />
 
         <TextView
@@ -115,11 +115,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/test_string"
+            android:text="@string/text_view_genreL_text"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFilmLengthL"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLengthL"
             tools:visibility="visible" />
 
         <TextView
@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/test_string"
+            android:text="@string/text_view_countryL_text"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,7 +175,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCountriesL"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCountries"
             tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
