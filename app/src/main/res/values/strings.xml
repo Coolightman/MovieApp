@@ -5,8 +5,8 @@
     <string name="test_string">TEST</string>
     <string name="refresh_button_descr">refresh button</string>
     <string-array name="spinner_top_items">
-        <item>Популярные</item>
-        <item>250 Кинопоиск</item>
-        <item>Ожидаемые</item>
+        <item>Топ популярных</item>
+        <item>Топ 250 Кинопоиск</item>
+        <item>Топ ожидаемых</item>
     </string-array>
 </resources>
