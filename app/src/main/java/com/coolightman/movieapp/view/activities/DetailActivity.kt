@@ -3,21 +3,26 @@ package com.coolightman.movieapp.view.activities
 import android.os.Bundle
 import android.view.View.VISIBLE
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.coolightman.movieapp.R
 import com.coolightman.movieapp.model.data.Country
 import com.coolightman.movieapp.model.data.Genre
 import com.coolightman.movieapp.model.data.Movie
+import com.coolightman.movieapp.view.adapters.FrameAdapter
 import com.coolightman.movieapp.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.movie_info.*
 
 class DetailActivity : AppCompatActivity() {
+
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var movie: Movie
+    private lateinit var frameAdapter: FrameAdapter
 
     companion object {
         const val POSTER_HEIGHT = 1100
@@ -31,12 +36,28 @@ class DetailActivity : AppCompatActivity() {
         val movieId = intent.getLongExtra("id", -1)
 
         createObservingData(movieId)
+        createAdapters()
         detailViewModel.loadMovieData(movieId)
+    }
+
+    private fun createAdapters() {
+        createFrameAdapter()
+    }
+
+    private fun createFrameAdapter() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewFrames.layoutManager = layoutManager
+        frameAdapter = FrameAdapter { onFrameItemClickListener() }
+        recyclerViewFrames.adapter = frameAdapter
+    }
+
+    private fun onFrameItemClickListener() {
+        Toast.makeText(this, "bigImage", Toast.LENGTH_SHORT).show()
     }
 
     private fun createObservingData(movieId: Long) {
         observeMovie(movieId)
-//        observeFrames()
+        observeFrames(movieId)
 //        observeVideos()
 //        observeFacts()
 //        observeSimilars()
@@ -60,12 +81,20 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-//    private fun observeFrames() {
-//        detailViewModel.getFrames().observe(this) {
-//
-//        }
-//    }
-//
+    private fun observeFrames(movieId: Long) {
+        detailViewModel.getFrames(movieId).observe(this) {
+            if (it == null) {
+                detailViewModel.loadFrames(movieId)
+            } else {
+                val list = it.frames
+                if (list.isNotEmpty()) {
+                    frameAdapter.setFrames(list)
+                    recyclerViewFrames.visibility = VISIBLE
+                }
+            }
+        }
+    }
+
 //    private fun observeVideos() {
 //        detailViewModel.getVideos().observe(this) {
 //
@@ -94,6 +123,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setNumber() {
         textViewNumber.text = movie.topPopularPlace.toString()
         textViewNumber.visibility = VISIBLE
+
     }
 
     private fun setRating() {

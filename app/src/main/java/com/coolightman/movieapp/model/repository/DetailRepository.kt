@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.MovieDetails
+import com.coolightman.movieapp.model.data.response.Frames
 import com.coolightman.movieapp.model.db.MovieDatabase
 import com.coolightman.movieapp.model.network.ApiFactory
 import com.coolightman.movieapp.util.ExecutorService
@@ -35,8 +36,8 @@ class DetailRepository(private val application: Application) {
     }
 
     private fun downloadMovieDetails(movieId: Long) {
-        val details = apiService.loadMovieDetails(movieId)
-        details.enqueue(object : Callback<MovieDetails> {
+        val detailsCall = apiService.loadMovieDetails(movieId)
+        detailsCall.enqueue(object : Callback<MovieDetails> {
             override fun onResponse(call: Call<MovieDetails>, response: Response<MovieDetails>) {
                 if (response.isSuccessful) {
                     setMovieDetailsInMovie(response)
@@ -69,7 +70,47 @@ class DetailRepository(private val application: Application) {
         }
     }
 
+    fun loadFrames(movieId: Long) {
+        executor.execute {
+            downloadFrames(movieId)
+        }
+    }
+
+    private fun downloadFrames(movieId: Long) {
+        val framesCall = apiService.loadMovieFrames(movieId)
+        framesCall.enqueue(object : Callback<Frames> {
+            override fun onResponse(call: Call<Frames>, response: Response<Frames>) {
+                if (response.isSuccessful) {
+                    val frames = response.body()
+                    Log.e("REsponseFrames", frames.toString())
+                    frames?.let {
+                        it.movieId = movieId
+                        insertFramesInDb(it)
+                    }
+                } else {
+                    Log.e("Response", "Response Frames is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<Frames>, t: Throwable) {
+                Log.e("Call", "Call Frames failure")
+            }
+        })
+    }
+
+    private fun insertFramesInDb(it: Frames) {
+        executor.execute {
+            database.framesDao().insertFrames(it)
+        }
+    }
+
     fun getMovie(movieId: Long): LiveData<Movie> {
         return database.movieDao().getMovieLiveData(movieId)
     }
+
+    fun getFrames(movieId: Long): LiveData<Frames?> {
+        return database.framesDao().getFramesLiveData(movieId)
+    }
+
+
 }

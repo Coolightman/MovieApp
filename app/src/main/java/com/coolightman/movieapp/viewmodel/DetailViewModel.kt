@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.coolightman.movieapp.model.data.*
+import com.coolightman.movieapp.model.data.response.Frames
 import com.coolightman.movieapp.model.repository.DetailRepository
 
 class DetailViewModel(application: Application) : AndroidViewModel(application) {
@@ -14,13 +15,19 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         detailRepository.loadMovieData(movieId)
     }
 
+    fun loadFrames(movieId: Long) {
+        detailRepository.loadFrames(movieId)
+    }
+
     fun getMovie(movieId: Long): LiveData<Movie> {
         return detailRepository.getMovie(movieId)
     }
 
-//    fun getFrames(): LiveData<List<Frame>> {
-//        TODO("Not yet implemented")
-//    }
+    fun getFrames(movieId: Long): LiveData<Frames?> {
+        return detailRepository.getFrames(movieId)
+    }
+
+
 //
 //    fun getVideos(): LiveData<List<Video>> {
 //        TODO("Not yet implemented")
