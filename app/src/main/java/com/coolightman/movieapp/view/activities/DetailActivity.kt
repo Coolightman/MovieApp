@@ -3,6 +3,8 @@ package com.coolightman.movieapp.view.activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View.VISIBLE
 import android.widget.TextView
 import android.widget.Toast
@@ -47,12 +49,32 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun listeners() {
+        imageViewStar.setOnClickListener {
+            if (movie.isFavourite) {
+                movie.isFavourite = false
+                detailViewModel.updateMovieInDb(movie)
+                shortToast(getString(R.string.favorite_added))
+            } else {
+                movie.isFavourite = true
+                detailViewModel.updateMovieInDb(movie)
+                shortToast(getString(R.string.favorite_deleted))
+            }
+        }
+
         textViewKinopoisk.setOnClickListener {
             movie.webUrl?.let {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(movie.webUrl))
                 startActivity(intent)
             }
         }
+    }
+
+    private fun shortToast(text: String) {
+        val toast = Toast.makeText(this, text, Toast.LENGTH_SHORT)
+        toast.show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            toast.cancel()
+        }, 700)
     }
 
     private fun createAdapters() {

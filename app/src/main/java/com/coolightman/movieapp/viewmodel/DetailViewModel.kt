@@ -36,6 +36,10 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         return detailRepository.getVideos(movieId)
     }
 
+    fun updateMovieInDb(movie: Movie) {
+        detailRepository.updateMovieInDb(movie)
+    }
+
 
 //    fun getFacts(): LiveData<List<Fact>> {
 //        TODO("Not yet implemented")

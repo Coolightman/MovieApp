@@ -15,6 +15,8 @@
     <string name="text_view_number250L_text">Топ 250</string>
     <string name="text_view_numberAwaitL_text">Ожидаем.</string>
     <string name="image_view_trailer_descr">trailer image</string>
+    <string name="favorite_added">Убран из избранного</string>
+    <string name="favorite_deleted">Добавлен в избранное</string>
     <string-array name="spinner_top_items">
         <item>Топ популярных</item>
         <item>Топ 250 Кинопоиск</item>

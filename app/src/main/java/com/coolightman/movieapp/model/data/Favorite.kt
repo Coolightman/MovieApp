@@ -12,8 +12,9 @@ data class Favorite(
     val preview: String? = null
 ) {
     var isFavourite: Boolean = false
-    var placeTop100: String? = null
-    var placeTop250: String? = null
+    var topPopularPlace: Int = 0
+    var top250Place: Int = 0
+    var topAwaitPlace: Int = 0
     var isDetailed: Boolean = false
     var poster: String? = null
     var nameOriginal: String? = null
@@ -21,7 +22,8 @@ data class Favorite(
     var slogan: String? = null
     var year: String? = null
     var length: Int? = null
-    var genres: List<Genre>? = null
-    var countries: List<Country>? = null
+    var genres: List<Genre> = emptyList()
+    var countries: List<Country> = emptyList()
     var description: String? = null
+    var webUrl: String? = null
 }

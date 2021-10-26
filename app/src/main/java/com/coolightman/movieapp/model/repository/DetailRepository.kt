@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import com.coolightman.movieapp.model.data.Favorite
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.MovieDetails
 import com.coolightman.movieapp.model.data.response.Frames
@@ -148,6 +149,47 @@ class DetailRepository(private val application: Application) {
 
     fun getVideos(movieId: Long): LiveData<Videos?> {
         return database.videosDao().getVideosLiveData(movieId)
+    }
+
+    fun updateMovieInDb(movie: Movie) {
+        executor.execute {
+            val favorite = getFavoriteFromMovie(movie)
+            if (movie.isFavourite){
+                insertFavorite(favorite)
+            }else{
+                deleteFavorite(favorite)
+            }
+
+            database.movieDao().update(movie)
+        }
+    }
+
+    private fun deleteFavorite(favorite: Favorite) {
+        database.favoriteDao().deleteFavorite(favorite.movieId)
+    }
+
+    private fun insertFavorite(favorite: Favorite) {
+        database.favoriteDao().insertFavorite(favorite)
+    }
+
+    private fun getFavoriteFromMovie(movie: Movie): Favorite {
+        val favorite = Favorite(movie.movieId, movie.rating, movie.ratingCount, movie.preview)
+        favorite.isFavourite = movie.isFavourite
+        favorite.topPopularPlace = movie.topPopularPlace
+        favorite.top250Place = movie.top250Place
+        favorite.topAwaitPlace = movie.topAwaitPlace
+        favorite.isDetailed = movie.isDetailed
+        favorite.poster = movie.poster
+        favorite.nameOriginal = movie.nameOriginal
+        favorite.nameRu = movie.nameRu
+        favorite.slogan = movie.slogan
+        favorite.year = movie.year
+        favorite.length = movie.length
+        favorite.genres = movie.genres
+        favorite.countries = movie.countries
+        favorite.description = movie.description
+        favorite.webUrl = movie.webUrl
+        return favorite
     }
 
 
