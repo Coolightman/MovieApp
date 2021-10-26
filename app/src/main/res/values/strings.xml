@@ -10,7 +10,11 @@
     <string name="text_view_lengthL_text">Продолжительность</string>
     <string name="text_view_genreL_text">Жанр</string>
     <string name="text_view_countryL_text">Страна</string>
-    <string name="text_view_videosL_text">Видеоматериалы:</string>
+    <string name="text_view_videosL_text">Видеоматериалы</string>
+    <string name="text_view_numberPopL_text">Популярн.</string>
+    <string name="text_view_number250L_text">Топ 250</string>
+    <string name="text_view_numberAwaitL_text">Ожидаем.</string>
+    <string name="image_view_trailer_descr">trailer image</string>
     <string-array name="spinner_top_items">
         <item>Топ популярных</item>
         <item>Топ 250 Кинопоиск</item>

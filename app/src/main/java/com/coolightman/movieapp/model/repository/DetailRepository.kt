@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.MovieDetails
 import com.coolightman.movieapp.model.data.response.Frames
+import com.coolightman.movieapp.model.data.response.Videos
 import com.coolightman.movieapp.model.db.MovieDatabase
 import com.coolightman.movieapp.model.network.ApiFactory
 import com.coolightman.movieapp.util.ExecutorService
@@ -83,7 +84,6 @@ class DetailRepository(private val application: Application) {
             override fun onResponse(call: Call<Frames>, response: Response<Frames>) {
                 if (response.isSuccessful) {
                     val frames = response.body()
-                    Log.e("REsponseFrames", frames.toString())
                     frames?.let {
                         it.movieId = movieId
                         insertFramesInDb(it)
@@ -105,12 +105,49 @@ class DetailRepository(private val application: Application) {
         }
     }
 
+    fun loadVideos(movieId: Long) {
+        executor.execute {
+            downloadVideos(movieId)
+        }
+    }
+
+    private fun downloadVideos(movieId: Long) {
+        val videosCall = apiService.loadMovieVideos(movieId)
+        videosCall.enqueue(object : Callback<Videos> {
+            override fun onResponse(call: Call<Videos>, response: Response<Videos>) {
+                if (response.isSuccessful) {
+                    val videos = response.body()
+                    videos?.let {
+                        it.movieId = movieId
+                        insertVideosInDb(videos)
+                    }
+                } else {
+                    Log.e("Response", "Response Videos is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<Videos>, t: Throwable) {
+                Log.e("Call", "Call Videos failure")
+            }
+        })
+    }
+
+    private fun insertVideosInDb(videos: Videos) {
+        executor.execute {
+            database.videosDao().insertVideos(videos)
+        }
+    }
+
     fun getMovie(movieId: Long): LiveData<Movie> {
         return database.movieDao().getMovieLiveData(movieId)
     }
 
     fun getFrames(movieId: Long): LiveData<Frames?> {
         return database.framesDao().getFramesLiveData(movieId)
+    }
+
+    fun getVideos(movieId: Long): LiveData<Videos?> {
+        return database.videosDao().getVideosLiveData(movieId)
     }
 
 

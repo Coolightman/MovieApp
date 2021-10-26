@@ -2,22 +2,25 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp">
+    android:layout_width="250dp"
+    android:layout_height="80dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageViewTrailer"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_play_circle_filled_24"
-            app:tint="@android:color/holo_red_light" />
+            app:tint="@android:color/holo_red_light"
+            android:contentDescription="@string/image_view_trailer_descr" />
 
         <TextView
             android:id="@+id/textViewTrailerName"
@@ -26,7 +29,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="TextView"
+            android:text="@string/test_string"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewTrailer"

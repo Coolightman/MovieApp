@@ -1,5 +1,6 @@
 package com.coolightman.movieapp.view.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coolightman.movieapp.R
 import com.coolightman.movieapp.model.data.Video
 
-class VideoAdapter(
-    private val videos: List<Video>,
-    private val listener: (Video) -> Unit
-) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
+class VideoAdapter(private val listener: (Video) -> Unit) :
+    RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
+
+    private var videos = listOf<Video>()
 
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val trailerName: TextView = itemView.findViewById(R.id.textViewTrailerName)
@@ -32,5 +33,11 @@ class VideoAdapter(
 
     override fun getItemCount(): Int {
         return videos.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setVideo(videos: List<Video>){
+        this.videos = videos
+        notifyDataSetChanged()
     }
 }

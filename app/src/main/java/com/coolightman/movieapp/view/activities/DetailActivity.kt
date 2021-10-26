@@ -15,7 +15,9 @@ import com.coolightman.movieapp.R
 import com.coolightman.movieapp.model.data.Country
 import com.coolightman.movieapp.model.data.Genre
 import com.coolightman.movieapp.model.data.Movie
+import com.coolightman.movieapp.model.data.Video
 import com.coolightman.movieapp.view.adapters.FrameAdapter
+import com.coolightman.movieapp.view.adapters.VideoAdapter
 import com.coolightman.movieapp.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.movie_info.*
@@ -25,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var movie: Movie
     private lateinit var frameAdapter: FrameAdapter
+    private lateinit var videoAdapter: VideoAdapter
 
     companion object {
         const val POSTER_HEIGHT = 1100
@@ -45,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun listeners() {
         textViewKinopoisk.setOnClickListener {
-            movie.webUrl?.let{
+            movie.webUrl?.let {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(movie.webUrl))
                 startActivity(intent)
             }
@@ -58,7 +61,15 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun createVideoAdapter() {
-//        TODO("Not yet implemented")
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewVideos.layoutManager = layoutManager
+        videoAdapter = VideoAdapter { onVideoItemClickListener(it) }
+        recyclerViewVideos.adapter = videoAdapter
+    }
+
+    private fun onVideoItemClickListener(video: Video) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video.url))
+        startActivity(intent)
     }
 
     private fun createFrameAdapter() {
@@ -75,7 +86,7 @@ class DetailActivity : AppCompatActivity() {
     private fun createObservingData(movieId: Long) {
         observeMovie(movieId)
         observeFrames(movieId)
-//        observeVideos()
+        observeVideos(movieId)
 //        observeFacts()
 //        observeSimilars()
     }
@@ -113,12 +124,21 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-//    private fun observeVideos() {
-//        detailViewModel.getVideos().observe(this) {
-//
-//        }
-//    }
-//
+    private fun observeVideos(movieId: Long) {
+        detailViewModel.getVideos(movieId).observe(this) {
+            if (it == null) {
+                detailViewModel.loadVideos(movieId)
+            } else {
+                val list = it.items
+                if (list.isNotEmpty()) {
+                    videoAdapter.setVideo(list)
+                    textViewVideosL.visibility = VISIBLE
+                    recyclerViewVideos.visibility = VISIBLE
+                }
+            }
+        }
+    }
+
 //    private fun observeFacts() {
 //        detailViewModel.getFacts().observe(this) {
 //
@@ -139,9 +159,27 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setNumber() {
-        textViewNumber.text = movie.topPopularPlace.toString()
-        textViewNumber.visibility = VISIBLE
-
+        val numberPop = movie.topPopularPlace
+        val number250 = movie.top250Place
+        val numberAwait = movie.topAwaitPlace
+        if (numberPop != 0) {
+            val number = "$numberPop"
+            textViewNumberPop.text = number
+            textViewNumberPop.visibility = VISIBLE
+            textViewNumberPopL.visibility = VISIBLE
+        }
+        if (number250 != 0) {
+            val number = "$number250"
+            textViewNumber250.text = number
+            textViewNumber250.visibility = VISIBLE
+            textViewNumber250L.visibility = VISIBLE
+        }
+        if (numberAwait != 0) {
+            val number = "$numberAwait"
+            textViewNumberAwait.text = number
+            textViewNumberAwait.visibility = VISIBLE
+            textViewNumberAwaitL.visibility = VISIBLE
+        }
     }
 
     private fun setRating() {

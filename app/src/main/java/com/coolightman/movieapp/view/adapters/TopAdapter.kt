@@ -22,7 +22,7 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
 
     class TopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val preview: ImageView = itemView.findViewById(R.id.imageViewPreview)
-        val number: TextView = itemView.findViewById(R.id.textViewNumber)
+        val number: TextView = itemView.findViewById(R.id.textViewNumberPop)
         val rating: TextView = itemView.findViewById(R.id.textViewRating)
         val favourite: ImageView = itemView.findViewById(R.id.imageViewFavourite)
     }

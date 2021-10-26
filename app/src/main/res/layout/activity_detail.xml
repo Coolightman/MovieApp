@@ -24,7 +24,7 @@
             tools:srcCompat="@drawable/placeholder_image_poster" />
 
         <TextView
-            android:id="@+id/textViewNumber"
+            android:id="@+id/textViewNumberPop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -36,10 +36,53 @@
             android:paddingBottom="3dp"
             android:text="@string/test_string"
             android:textSize="18sp"
+            android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewNumber250"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="6dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="3dp"
+            android:text="@string/test_string"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNumberPopL"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewNumberAwait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="6dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="3dp"
+            android:text="@string/test_string"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNumber250L"
             tools:visibility="visible" />
 
         <TextView
@@ -96,6 +139,46 @@
             app:layout_constraintTop_toBottomOf="@id/imageViewPoster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewNumberPopL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_numberPopL_text"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/textViewNumberPop"
+            app:layout_constraintStart_toStartOf="@+id/textViewNumberPop"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNumberPop"
+            tools:ignore="SmallSp"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewNumber250L"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_number250L_text"
+            android:textColor="#b8860b"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/textViewNumber250"
+            app:layout_constraintStart_toStartOf="@+id/textViewNumber250"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNumber250"
+            tools:ignore="SmallSp"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewNumberAwaitL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_numberAwaitL_text"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/textViewNumberAwait"
+            app:layout_constraintStart_toStartOf="@+id/textViewNumberAwait"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNumberAwait"
+            tools:ignore="SmallSp"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

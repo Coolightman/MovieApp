@@ -15,7 +15,4 @@ interface FramesDao {
 
     @Query("select * from frames where movieId = :id ")
     fun getFramesLiveData(id: Long): LiveData<Frames?>
-
-    @Query("select * from frames where movieId = :id ")
-    fun getFrames(id: Long): Frames?
 }
