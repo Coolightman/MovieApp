@@ -65,6 +65,7 @@ class DetailRepository(private val application: Application) {
             movie.genres = it.genres
             movie.countries = it.countries
             movie.description = it.description
+            movie.webUrl = it.webUrl
             movie.isDetailed = true
             executor.execute { database.movieDao().update(movie) }
         }

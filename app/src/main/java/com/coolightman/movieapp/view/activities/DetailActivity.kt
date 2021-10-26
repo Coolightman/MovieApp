@@ -1,5 +1,7 @@
 package com.coolightman.movieapp.view.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View.VISIBLE
 import android.widget.TextView
@@ -37,11 +39,26 @@ class DetailActivity : AppCompatActivity() {
 
         createObservingData(movieId)
         createAdapters()
+        listeners()
         detailViewModel.loadMovieData(movieId)
+    }
+
+    private fun listeners() {
+        textViewKinopoisk.setOnClickListener {
+            movie.webUrl?.let{
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(movie.webUrl))
+                startActivity(intent)
+            }
+        }
     }
 
     private fun createAdapters() {
         createFrameAdapter()
+        createVideoAdapter()
+    }
+
+    private fun createVideoAdapter() {
+//        TODO("Not yet implemented")
     }
 
     private fun createFrameAdapter() {
@@ -78,6 +95,7 @@ class DetailActivity : AppCompatActivity() {
             setCountries()
             setGenres()
             setDescription()
+            setButtonKinopoisk()
         }
     }
 
@@ -261,5 +279,9 @@ class DetailActivity : AppCompatActivity() {
             textViewDescription.text = it
             textViewDescription.visibility = VISIBLE
         }
+    }
+
+    private fun setButtonKinopoisk() {
+        textViewKinopoisk.visibility = VISIBLE
     }
 }

@@ -29,4 +29,5 @@ data class Movie(
     var genres: List<Genre> = emptyList()
     var countries: List<Country> = emptyList()
     var description: String? = null
+    var webUrl: String? = null
 }

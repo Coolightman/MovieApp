@@ -13,5 +13,6 @@ data class MovieDetails(
     val length: Int?,
     val genres: List<Genre>,
     val countries: List<Country>,
-    val description: String?
+    val description: String?,
+    val webUrl: String?
 )
