@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.coolightman.movieapp.model.data.Favorite
+import com.coolightman.movieapp.model.data.MovieDad
 
 @Dao
 interface FavoriteDao {

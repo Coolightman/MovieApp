@@ -16,14 +16,6 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         detailRepository.loadMovieData(movieId)
     }
 
-    fun loadFrames(movieId: Long) {
-        detailRepository.loadFrames(movieId)
-    }
-
-    fun loadVideos(movieId: Long) {
-        detailRepository.loadVideos(movieId)
-    }
-
     fun getMovie(movieId: Long): LiveData<Movie> {
         return detailRepository.getMovie(movieId)
     }

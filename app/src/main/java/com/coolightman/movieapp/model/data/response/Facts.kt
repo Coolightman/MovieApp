@@ -6,9 +6,8 @@ import com.coolightman.movieapp.model.data.Fact
 
 @Entity
 data class Facts(
-    var total : Int,
-    var items : List<Fact>
-){
     @PrimaryKey
-    var movieId: Long = 0
-}
+    var movieId: Long = 0,
+    var total: Int,
+    var items: List<Fact>
+)

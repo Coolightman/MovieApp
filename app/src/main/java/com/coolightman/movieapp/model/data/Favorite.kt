@@ -6,24 +6,24 @@ import androidx.room.PrimaryKey
 @Entity
 data class Favorite(
     @PrimaryKey
-    val movieId: Long,
-    val rating: String? = null,
-    val ratingCount: String? = null,
-    val preview: String? = null
-) {
-    var isFavourite: Boolean = false
-    var topPopularPlace: Int = 0
-    var top250Place: Int = 0
-    var topAwaitPlace: Int = 0
-    var isDetailed: Boolean = false
-    var poster: String? = null
-    var nameOriginal: String? = null
-    var nameRu: String? = null
-    var slogan: String? = null
-    var year: String? = null
-    var length: Int? = null
-    var genres: List<Genre> = emptyList()
-    var countries: List<Country> = emptyList()
-    var description: String? = null
-    var webUrl: String? = null
-}
+    override val movieId: Long,
+    override val rating: String? = null,
+    override val ratingCount: String? = null,
+    override val preview: String? = null,
+    override var isFavourite: Boolean = false,
+    override var topPopularPlace: Int = 0,
+    override var top250Place: Int = 0,
+    override var topAwaitPlace: Int = 0,
+    override var isDetailed: Boolean = false,
+    override var poster: String? = null,
+    override var nameOriginal: String? = null,
+    override var nameRu: String? = null,
+    override var slogan: String? = null,
+    override var year: String? = null,
+    override var length: Int? = null,
+    override var genres: List<Genre> = emptyList(),
+    override var countries: List<Country> = emptyList(),
+    override var description: String? = null,
+    override var webUrl: String? = null
+) : MovieDad
+

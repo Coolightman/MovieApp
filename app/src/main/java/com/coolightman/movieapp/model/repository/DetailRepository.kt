@@ -21,7 +21,6 @@ class DetailRepository(private val application: Application) {
     private val apiService = ApiFactory.getService()
     private val database = MovieDatabase.getDb(application)
     private val executor = ExecutorService.getExecutor()
-    private val handler = ExecutorService.getHandler()
 
     private lateinit var movie: Movie
 
@@ -30,8 +29,10 @@ class DetailRepository(private val application: Application) {
             val movieDb = database.movieDao().getMovie(movieId)
             movieDb?.let {
                 this.movie = it
-                if (!movie.isDetailed) {
-                    downloadMovieDetails(it.movieId)
+                if (!it.isDetailed) {
+                    downloadMovieDetails(movieId)
+                    downloadFrames(movieId)
+                    downloadVideos(movieId)
                 }
             }
         }
@@ -73,20 +74,16 @@ class DetailRepository(private val application: Application) {
         }
     }
 
-    fun loadFrames(movieId: Long) {
-        executor.execute {
-            downloadFrames(movieId)
-        }
-    }
-
     private fun downloadFrames(movieId: Long) {
         val framesCall = apiService.loadMovieFrames(movieId)
         framesCall.enqueue(object : Callback<Frames> {
             override fun onResponse(call: Call<Frames>, response: Response<Frames>) {
                 if (response.isSuccessful) {
                     val frames = response.body()
+                    Log.e("framesBody", frames.toString())
                     frames?.let {
                         it.movieId = movieId
+                        Log.e("responseFrames", frames.toString())
                         insertFramesInDb(it)
                     }
                 } else {
@@ -103,12 +100,6 @@ class DetailRepository(private val application: Application) {
     private fun insertFramesInDb(it: Frames) {
         executor.execute {
             database.framesDao().insertFrames(it)
-        }
-    }
-
-    fun loadVideos(movieId: Long) {
-        executor.execute {
-            downloadVideos(movieId)
         }
     }
 
@@ -154,12 +145,11 @@ class DetailRepository(private val application: Application) {
     fun updateMovieInDb(movie: Movie) {
         executor.execute {
             val favorite = getFavoriteFromMovie(movie)
-            if (movie.isFavourite){
+            if (movie.isFavourite) {
                 insertFavorite(favorite)
-            }else{
+            } else {
                 deleteFavorite(favorite)
             }
-
             database.movieDao().update(movie)
         }
     }
@@ -191,6 +181,4 @@ class DetailRepository(private val application: Application) {
         favorite.webUrl = movie.webUrl
         return favorite
     }
-
-
 }

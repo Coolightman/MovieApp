@@ -134,12 +134,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun observeFrames(movieId: Long) {
         detailViewModel.getFrames(movieId).observe(this) {
-            if (it == null) {
-                detailViewModel.loadFrames(movieId)
-            } else {
-                val list = it.frames
-                if (list.isNotEmpty()) {
-                    frameAdapter.setFrames(list)
+            it?.let {
+                val items = it.frames
+                if (items.isNotEmpty()) {
+                    frameAdapter.setFrames(items)
                     recyclerViewFrames.visibility = VISIBLE
                 }
             }
@@ -148,12 +146,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun observeVideos(movieId: Long) {
         detailViewModel.getVideos(movieId).observe(this) {
-            if (it == null) {
-                detailViewModel.loadVideos(movieId)
-            } else {
-                val list = it.items
-                if (list.isNotEmpty()) {
-                    videoAdapter.setVideo(list)
+            it?.let {
+                val items = it.items
+                if (items.isNotEmpty()) {
+                    videoAdapter.setVideo(items)
                     textViewVideosL.visibility = VISIBLE
                     recyclerViewVideos.visibility = VISIBLE
                 }

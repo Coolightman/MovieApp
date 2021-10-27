@@ -6,8 +6,7 @@ import com.coolightman.movieapp.model.data.Frame
 
 @Entity
 data class Frames(
-    var frames: List<Frame>
-) {
     @PrimaryKey
-    var movieId: Long = 0
-}
+    var movieId: Long = 0,
+    var frames: List<Frame>
+)
