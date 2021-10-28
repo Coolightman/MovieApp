@@ -163,22 +163,26 @@ class DetailRepository(private val application: Application) {
     }
 
     private fun getFavoriteFromMovie(movie: Movie): Favorite {
-        val favorite = Favorite(movie.movieId, movie.rating, movie.ratingCount, movie.preview)
-        favorite.isFavourite = movie.isFavourite
-        favorite.topPopularPlace = movie.topPopularPlace
-        favorite.top250Place = movie.top250Place
-        favorite.topAwaitPlace = movie.topAwaitPlace
-        favorite.isDetailed = movie.isDetailed
-        favorite.poster = movie.poster
-        favorite.nameOriginal = movie.nameOriginal
-        favorite.nameRu = movie.nameRu
-        favorite.slogan = movie.slogan
-        favorite.year = movie.year
-        favorite.length = movie.length
-        favorite.genres = movie.genres
-        favorite.countries = movie.countries
-        favorite.description = movie.description
-        favorite.webUrl = movie.webUrl
-        return favorite
+        return Favorite(
+            movie.movieId,
+            movie.rating,
+            movie.ratingCount,
+            movie.preview,
+            movie.isFavourite,
+            movie.topPopularPlace,
+            movie.top250Place,
+            movie.topAwaitPlace,
+            movie.isDetailed,
+            movie.poster,
+            movie.nameOriginal,
+            movie.nameRu,
+            movie.slogan,
+            movie.year,
+            movie.length,
+            movie.genres,
+            movie.countries,
+            movie.description,
+            movie.webUrl
+        )
     }
 }
