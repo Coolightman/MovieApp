@@ -10,15 +10,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.coolightman.movieapp.R
-import com.coolightman.movieapp.model.data.Country
-import com.coolightman.movieapp.model.data.Genre
-import com.coolightman.movieapp.model.data.Movie
-import com.coolightman.movieapp.model.data.Video
+import com.coolightman.movieapp.model.data.*
+import com.coolightman.movieapp.view.adapters.FactsAdapter
 import com.coolightman.movieapp.view.adapters.FrameAdapter
+import com.coolightman.movieapp.view.adapters.SimilarAdapter
 import com.coolightman.movieapp.view.adapters.VideoAdapter
 import com.coolightman.movieapp.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -30,6 +30,8 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var movie: Movie
     private lateinit var frameAdapter: FrameAdapter
     private lateinit var videoAdapter: VideoAdapter
+    private lateinit var factsAdapter: FactsAdapter
+    private lateinit var similarAdapter: SimilarAdapter
 
     companion object {
         const val POSTER_HEIGHT = 1100
@@ -80,6 +82,8 @@ class DetailActivity : AppCompatActivity() {
     private fun createAdapters() {
         createFrameAdapter()
         createVideoAdapter()
+        createFactsAdapter()
+        createSimilarsAdapter()
     }
 
     private fun createVideoAdapter() {
@@ -105,12 +109,34 @@ class DetailActivity : AppCompatActivity() {
         Toast.makeText(this, "bigImage", Toast.LENGTH_SHORT).show()
     }
 
+    private fun createFactsAdapter() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewFacts.layoutManager = layoutManager
+        factsAdapter = FactsAdapter { onFactClickListener(it) }
+        recyclerViewFacts.adapter = factsAdapter
+    }
+
+    private fun onFactClickListener(fact: Fact) {
+        Toast.makeText(this, "Big fact", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createSimilarsAdapter() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewSimilars.layoutManager = layoutManager
+        similarAdapter = SimilarAdapter { onSimilarClickListener(it) }
+        recyclerViewSimilars.adapter = similarAdapter
+    }
+
+    private fun onSimilarClickListener(similar: Movie) {
+        Toast.makeText(this, "Go to movie${similar.movieId}", Toast.LENGTH_SHORT).show()
+    }
+
     private fun createObservingData(movieId: Long) {
         observeMovie(movieId)
         observeFrames(movieId)
         observeVideos(movieId)
-//        observeFacts()
-//        observeSimilars()
+        observeFacts(movieId)
+        observeSimilars(movieId)
     }
 
     private fun observeMovie(movieId: Long) {
@@ -157,15 +183,31 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-//    private fun observeFacts() {
-//        detailViewModel.getFacts().observe(this) {
-//
-//        }
-//    }
-//
-//    private fun observeSimilars() {
-//        detailViewModel.getSimilars()
-//    }
+    private fun observeFacts(movieId: Long) {
+        detailViewModel.getFacts(movieId).observe(this) {
+            it?.let {
+                val facts = it.items
+                if (facts.isNotEmpty()) {
+                    factsAdapter.setFacts(facts)
+                    textViewFactsL.visibility = VISIBLE
+                    recyclerViewFacts.visibility = VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun observeSimilars(movieId: Long) {
+        detailViewModel.getSimilars(movieId).observe(this){
+            it?.let{
+                val similars = it.items
+                if (similars.isNotEmpty()){
+                    similarAdapter.setSimilars(similars)
+                    textViewSimilarsL.visibility = VISIBLE
+                    recyclerViewSimilars.visibility = VISIBLE
+                }
+            }
+        }
+    }
 
     private fun setPoster() {
         Glide.with(this)

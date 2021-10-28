@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData
 import com.coolightman.movieapp.model.data.Favorite
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.MovieDetails
+import com.coolightman.movieapp.model.data.response.Facts
 import com.coolightman.movieapp.model.data.response.Frames
+import com.coolightman.movieapp.model.data.response.Similars
 import com.coolightman.movieapp.model.data.response.Videos
 import com.coolightman.movieapp.model.db.MovieDatabase
 import com.coolightman.movieapp.model.network.ApiFactory
@@ -33,6 +35,8 @@ class DetailRepository(private val application: Application) {
                     downloadMovieDetails(movieId)
                     downloadFrames(movieId)
                     downloadVideos(movieId)
+                    downloadFacts(movieId)
+                    downloadSimilars(movieId)
                 }
             }
         }
@@ -130,6 +134,60 @@ class DetailRepository(private val application: Application) {
         }
     }
 
+    private fun downloadFacts(movieId: Long) {
+        val factsCall = apiService.loadMovieFacts(movieId)
+        factsCall.enqueue(object : Callback<Facts> {
+            override fun onResponse(call: Call<Facts>, response: Response<Facts>) {
+                if (response.isSuccessful) {
+                    val facts = response.body()
+                    facts?.let {
+                        it.movieId = movieId
+                        insertFactsInDb(facts)
+                    }
+                } else {
+                    Log.e("Response", "Response Facts is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<Facts>, t: Throwable) {
+                Log.e("Call", "Call Facts failure")
+            }
+        })
+    }
+
+    private fun insertFactsInDb(facts: Facts) {
+        executor.execute {
+            database.factsDao().insertFacts(facts)
+        }
+    }
+
+    private fun downloadSimilars(movieId: Long) {
+        val similarsCall = apiService.loadSimilarMovies(movieId)
+        similarsCall.enqueue(object : Callback<Similars> {
+            override fun onResponse(call: Call<Similars>, response: Response<Similars>) {
+                if (response.isSuccessful) {
+                    val similars = response.body()
+                    similars?.let {
+                        it.movieId = movieId
+                        insertSimilarsInDb(it)
+                    }
+                } else {
+                    Log.e("Response", "Response Similars is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<Similars>, t: Throwable) {
+                Log.e("Call", "Call Similars failure")
+            }
+        })
+    }
+
+    private fun insertSimilarsInDb(similars: Similars) {
+        executor.execute {
+            database.similarsDao().insertSimilars(similars)
+        }
+    }
+
     fun getMovie(movieId: Long): LiveData<Movie> {
         return database.movieDao().getMovieLiveData(movieId)
     }
@@ -140,6 +198,14 @@ class DetailRepository(private val application: Application) {
 
     fun getVideos(movieId: Long): LiveData<Videos?> {
         return database.videosDao().getVideosLiveData(movieId)
+    }
+
+    fun getFacts(movieId: Long): LiveData<Facts?> {
+        return database.factsDao().getFactsLiveData(movieId)
+    }
+
+    fun getSimilars(movieId: Long): LiveData<Similars?>{
+        return database.similarsDao().getSimilarsLiveData(movieId)
     }
 
     fun updateMovieInDb(movie: Movie) {
