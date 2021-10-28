@@ -14,5 +14,7 @@ data class MovieDetails(
     val genres: List<Genre>,
     val countries: List<Country>,
     val description: String?,
-    val webUrl: String?
+    val webUrl: String?,
+    val ratingKinopoisk: String?,
+    val ratingKinopoiskVoteCount: String?
 )

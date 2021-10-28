@@ -14,5 +14,5 @@ interface VideosDao {
     fun insertVideos(vararg videos: Videos)
 
     @Query("select * from videos where movieId = :id")
-    fun getVideosLiveData(id: Long): LiveData<Videos?>
+    fun getVideosLiveData(id: Long): LiveData<Videos>
 }

@@ -9,11 +9,11 @@ data class Movie(
     @PrimaryKey
     @SerializedName("filmId")
     override val movieId: Long,
-    override val rating: String? = null,
+    override var rating: String? = null,
     @SerializedName("ratingVoteCount")
-    override val ratingCount: String? = null,
+    override var ratingCount: String? = null,
     @SerializedName("posterUrlPreview")
-    override val preview: String? = null,
+    override var preview: String? = null,
     override var isFavourite: Boolean = false,
     override var topPopularPlace: Int = 0,
     override var top250Place: Int = 0,
@@ -28,5 +28,5 @@ data class Movie(
     override var genres: List<Genre> = emptyList(),
     override var countries: List<Country> = emptyList(),
     override var description: String? = null,
-    override var webUrl: String?
+    override var webUrl: String? = null
 ): MovieDad

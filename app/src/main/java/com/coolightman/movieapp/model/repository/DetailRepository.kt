@@ -29,17 +29,24 @@ class DetailRepository(private val application: Application) {
     fun loadMovieData(movieId: Long) {
         executor.execute {
             val movieDb = database.movieDao().getMovie(movieId)
-            movieDb?.let {
-                this.movie = it
-                if (!it.isDetailed) {
-                    downloadMovieDetails(movieId)
-                    downloadFrames(movieId)
-                    downloadVideos(movieId)
-                    downloadFacts(movieId)
-                    downloadSimilars(movieId)
+            if (movieDb != null) {
+                this.movie = movieDb
+                if (!movieDb.isDetailed) {
+                    downloadMovieData(movieId)
                 }
+            } else {
+                this.movie = Movie(movieId)
+                downloadMovieData(movieId)
             }
         }
+    }
+
+    private fun downloadMovieData(movieId: Long) {
+        downloadMovieDetails(movieId)
+        downloadFrames(movieId)
+        downloadVideos(movieId)
+        downloadFacts(movieId)
+        downloadSimilars(movieId)
     }
 
     private fun downloadMovieDetails(movieId: Long) {
@@ -74,7 +81,11 @@ class DetailRepository(private val application: Application) {
             movie.description = it.description
             movie.webUrl = it.webUrl
             movie.isDetailed = true
-            executor.execute { database.movieDao().update(movie) }
+            if (movie.rating == null){
+                movie.rating = it.ratingKinopoisk
+                movie.ratingCount = it.ratingKinopoiskVoteCount
+            }
+            executor.execute { database.movieDao().insert(movie) }
         }
     }
 
@@ -84,10 +95,8 @@ class DetailRepository(private val application: Application) {
             override fun onResponse(call: Call<Frames>, response: Response<Frames>) {
                 if (response.isSuccessful) {
                     val frames = response.body()
-                    Log.e("framesBody", frames.toString())
                     frames?.let {
                         it.movieId = movieId
-                        Log.e("responseFrames", frames.toString())
                         insertFramesInDb(it)
                     }
                 } else {
@@ -192,19 +201,19 @@ class DetailRepository(private val application: Application) {
         return database.movieDao().getMovieLiveData(movieId)
     }
 
-    fun getFrames(movieId: Long): LiveData<Frames?> {
+    fun getFrames(movieId: Long): LiveData<Frames> {
         return database.framesDao().getFramesLiveData(movieId)
     }
 
-    fun getVideos(movieId: Long): LiveData<Videos?> {
+    fun getVideos(movieId: Long): LiveData<Videos> {
         return database.videosDao().getVideosLiveData(movieId)
     }
 
-    fun getFacts(movieId: Long): LiveData<Facts?> {
+    fun getFacts(movieId: Long): LiveData<Facts> {
         return database.factsDao().getFactsLiveData(movieId)
     }
 
-    fun getSimilars(movieId: Long): LiveData<Similars?>{
+    fun getSimilars(movieId: Long): LiveData<Similars> {
         return database.similarsDao().getSimilarsLiveData(movieId)
     }
 

@@ -14,5 +14,5 @@ interface FramesDao {
     fun insertFrames(vararg frames: Frames)
 
     @Query("select * from frames where movieId = :id ")
-    fun getFramesLiveData(id: Long): LiveData<Frames?>
+    fun getFramesLiveData(id: Long): LiveData<Frames>
 }

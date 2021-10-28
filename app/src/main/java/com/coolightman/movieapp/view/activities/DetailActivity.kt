@@ -5,12 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View.VISIBLE
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -128,7 +128,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun onSimilarClickListener(similar: Movie) {
-        Toast.makeText(this, "Go to movie${similar.movieId}", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("id", similar.movieId)
+        startActivity(intent)
     }
 
     private fun createObservingData(movieId: Long) {
@@ -141,20 +143,23 @@ class DetailActivity : AppCompatActivity() {
 
     private fun observeMovie(movieId: Long) {
         detailViewModel.getMovie(movieId).observe(this) {
-            this.movie = it
-            setPoster()
-            setNumber()
-            setRating()
-            setFavourite()
-            setNameOrigin()
-            setNameRu()
-            setSlogan()
-            setYear()
-            setFilmLength()
-            setCountries()
-            setGenres()
-            setDescription()
-            setButtonKinopoisk()
+            it?.let {
+                Log.e("ObservingMovie", it.toString())
+                this.movie = it
+                setPoster()
+                setNumber()
+                setRating()
+                setFavourite()
+                setNameOrigin()
+                setNameRu()
+                setSlogan()
+                setYear()
+                setFilmLength()
+                setCountries()
+                setGenres()
+                setDescription()
+                setButtonKinopoisk()
+            }
         }
     }
 
@@ -197,10 +202,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun observeSimilars(movieId: Long) {
-        detailViewModel.getSimilars(movieId).observe(this){
-            it?.let{
+        detailViewModel.getSimilars(movieId).observe(this) {
+            it?.let {
                 val similars = it.items
-                if (similars.isNotEmpty()){
+                if (similars.isNotEmpty()) {
                     similarAdapter.setSimilars(similars)
                     textViewSimilarsL.visibility = VISIBLE
                     recyclerViewSimilars.visibility = VISIBLE

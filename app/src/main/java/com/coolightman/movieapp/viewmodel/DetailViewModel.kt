@@ -3,6 +3,7 @@ package com.coolightman.movieapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.response.Facts
 import com.coolightman.movieapp.model.data.response.Frames
@@ -22,19 +23,19 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         return detailRepository.getMovie(movieId)
     }
 
-    fun getFrames(movieId: Long): LiveData<Frames?> {
+    fun getFrames(movieId: Long): LiveData<Frames> {
         return detailRepository.getFrames(movieId)
     }
 
-    fun getVideos(movieId: Long): LiveData<Videos?> {
+    fun getVideos(movieId: Long): LiveData<Videos> {
         return detailRepository.getVideos(movieId)
     }
 
-    fun getFacts(movieId: Long): LiveData<Facts?> {
+    fun getFacts(movieId: Long): LiveData<Facts> {
         return detailRepository.getFacts(movieId)
     }
 
-    fun getSimilars(movieId: Long): LiveData<Similars?> {
+    fun getSimilars(movieId: Long): LiveData<Similars> {
         return detailRepository.getSimilars(movieId)
     }
 

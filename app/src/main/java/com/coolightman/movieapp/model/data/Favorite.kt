@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 data class Favorite(
     @PrimaryKey
     override val movieId: Long,
-    override val rating: String? = null,
-    override val ratingCount: String? = null,
-    override val preview: String? = null,
+    override var rating: String? = null,
+    override var ratingCount: String? = null,
+    override var preview: String? = null,
     override var isFavourite: Boolean = false,
     override var topPopularPlace: Int = 0,
     override var top250Place: Int = 0,
