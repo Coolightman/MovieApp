@@ -146,19 +146,21 @@ class DetailActivity : AppCompatActivity() {
             it?.let {
                 Log.e("ObservingMovie", it.toString())
                 this.movie = it
-                setPoster()
-                setNumber()
-                setRating()
-                setFavourite()
-                setNameOrigin()
-                setNameRu()
-                setSlogan()
-                setYear()
-                setFilmLength()
-                setCountries()
-                setGenres()
-                setDescription()
-                setButtonKinopoisk()
+                if (movie.isDetailed){
+                    setPoster()
+                    setNumber()
+                    setRating()
+                    setFavourite()
+                    setNameOrigin()
+                    setNameRu()
+                    setSlogan()
+                    setYear()
+                    setFilmLength()
+                    setCountries()
+                    setGenres()
+                    setDescription()
+                    setButtonKinopoisk()
+                }
             }
         }
     }
