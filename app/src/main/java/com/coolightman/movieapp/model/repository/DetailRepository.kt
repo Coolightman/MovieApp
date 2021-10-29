@@ -3,7 +3,9 @@ package com.coolightman.movieapp.model.repository
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
+import com.coolightman.movieapp.model.data.Fact
 import com.coolightman.movieapp.model.data.Favorite
 import com.coolightman.movieapp.model.data.Movie
 import com.coolightman.movieapp.model.data.MovieDetails
@@ -154,7 +156,9 @@ class DetailRepository(private val application: Application) {
                     val facts = response.body()
                     facts?.let {
                         it.movieId = movieId
-                        insertFactsInDb(facts)
+                        val cleanFacts = clearFacts(it)
+                        it.items = cleanFacts
+                        insertFactsInDb(it)
                     }
                 } else {
                     Log.e("Response", "Response Facts is not successful")
@@ -165,6 +169,16 @@ class DetailRepository(private val application: Application) {
                 Log.e("Call", "Call Facts failure")
             }
         })
+    }
+
+    private fun clearFacts(facts: Facts): List<Fact> {
+        val cleanFacts = mutableListOf<Fact>()
+        for (fact in facts.items){
+            val cleanText = HtmlCompat.fromHtml(fact.text, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+            fact.text = cleanText
+            cleanFacts.add(fact)
+        }
+        return cleanFacts
     }
 
     private fun insertFactsInDb(facts: Facts) {
