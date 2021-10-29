@@ -45,8 +45,8 @@ class TopActivity : AppCompatActivity() {
         setContentView(R.layout.activity_top)
         topViewModel = ViewModelProvider(this).get(TopViewModel::class.java)
 
-        createTopRecyclerView()
         createObservingData()
+        createTopAdapter()
         listeners()
     }
 
@@ -66,19 +66,11 @@ class TopActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun createTopRecyclerView() {
-        createLayoutManager()
-        createAdapter()
-    }
-
-    private fun createAdapter() {
-        topAdapter = TopAdapter { onItemClickListener(it) }
-        recyclerViewTops.adapter = topAdapter
-    }
-
-    private fun createLayoutManager() {
+    private fun createTopAdapter() {
         layoutManager = GridLayoutManager(this, getColumnCount())
         recyclerViewTops.layoutManager = layoutManager
+        topAdapter = TopAdapter { onItemClickListener(it) }
+        recyclerViewTops.adapter = topAdapter
     }
 
     private fun getColumnCount(): Int {

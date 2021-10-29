@@ -1,5 +1,6 @@
 package com.coolightman.movieapp.model.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -17,4 +18,7 @@ interface FavoriteDao {
 
     @Query("delete from favorite where movieId = :id")
     fun deleteFavorite(id: Long)
+
+    @Query("select * from favorite")
+    fun getALlLiveData(): LiveData<List<Favorite>>
 }
