@@ -20,6 +20,8 @@
     <string name="favorite_added">Убран из избранного</string>
     <string name="favorite_deleted">Добавлен в избранное</string>
     <string name="text_view_spoiler_warn_text">Осторожно! Спойлер!</string>
+    <string name="main_menu_main_title">Главная</string>
+    <string name="main_menu_favourite_title">Избранное</string>
     <string-array name="spinner_top_items">
         <item>Топ популярных</item>
         <item>Топ 250 Кинопоиск</item>

@@ -3,6 +3,8 @@ package com.coolightman.movieapp.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -46,6 +48,22 @@ class TopActivity : AppCompatActivity() {
         createTopRecyclerView()
         createObservingData()
         listeners()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = when (item.itemId) {
+            R.id.itemMain -> Intent(this, TopActivity::class.java)
+            R.id.itemFavourite -> Intent(this, FavoriteActivity::class.java)
+            else -> Intent(this, TopActivity::class.java)
+        }
+        startActivity(intent)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun createTopRecyclerView() {

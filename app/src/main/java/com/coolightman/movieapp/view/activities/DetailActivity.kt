@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.VISIBLE
 import android.widget.TextView
 import android.widget.Toast
@@ -48,6 +50,22 @@ class DetailActivity : AppCompatActivity() {
         createAdapters()
         listeners()
         detailViewModel.loadMovieData(movieId)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = when (item.itemId) {
+            R.id.itemMain -> Intent(this, TopActivity::class.java)
+            R.id.itemFavourite -> Intent(this, FavoriteActivity::class.java)
+            else -> Intent(this, TopActivity::class.java)
+        }
+        startActivity(intent)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun listeners() {
