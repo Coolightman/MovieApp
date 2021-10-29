@@ -85,6 +85,9 @@ class DetailRepository(private val application: Application) {
                 movie.rating = it.ratingKinopoisk
                 movie.ratingCount = it.ratingKinopoiskVoteCount
             }
+            if (movie.preview == null){
+                movie.preview = it.posterUrlPreview
+            }
             executor.execute { database.movieDao().insert(movie) }
         }
     }

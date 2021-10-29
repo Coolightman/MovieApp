@@ -14,7 +14,7 @@ import com.coolightman.movieapp.model.data.response.Videos
 import com.coolightman.movieapp.model.db.dao.*
 
 @Database(
-    version = 12,
+    version = 13,
     entities = [
         Movie::class, Frames::class, Videos::class,
         Facts::class, Similars::class, Favorite::class

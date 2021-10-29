@@ -16,5 +16,6 @@ data class MovieDetails(
     val description: String?,
     val webUrl: String?,
     val ratingKinopoisk: String?,
-    val ratingKinopoiskVoteCount: String?
+    val ratingKinopoiskVoteCount: String?,
+    val posterUrlPreview: String?
 )
