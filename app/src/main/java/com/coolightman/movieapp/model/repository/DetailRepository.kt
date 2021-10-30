@@ -15,7 +15,10 @@ import com.coolightman.movieapp.model.data.response.Similars
 import com.coolightman.movieapp.model.data.response.Videos
 import com.coolightman.movieapp.model.db.MovieDatabase
 import com.coolightman.movieapp.model.network.ApiFactory
-import com.coolightman.movieapp.util.ExecutorService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,36 +27,31 @@ class DetailRepository(private val application: Application) {
 
     private val apiService = ApiFactory.getService()
     private val database = MovieDatabase.getDb(application)
-    private val executor = ExecutorService.getExecutor()
-    private val handler = ExecutorService.getHandler()
 
-    private lateinit var movie: Movie
+    private val parentJob = Job()
+    private val coroutineContext = parentJob + Dispatchers.IO
+    private val scope = CoroutineScope(coroutineContext)
 
     fun loadMovieData(movieId: Long) {
-        executor.execute {
+        scope.launch {
             val movieDb = database.movieDao().getMovie(movieId)
             if (movieDb != null) {
-                this.movie = movieDb
                 if (!movieDb.isDetailed) {
-                    downloadMovieDetails(movieId)
+                    downloadMovieDetails(movieDb)
                 }
             } else {
-                this.movie = Movie(movieId)
-                downloadMovieDetails(movieId)
+                val movie = Movie(movieId)
+                downloadMovieDetails(movie)
             }
         }
     }
 
-    private fun downloadMovieData(movieId: Long) {
-        downloadMovieDetails(movieId)
-    }
-
-    private fun downloadMovieDetails(movieId: Long) {
-        val detailsCall = apiService.loadMovieDetails(movieId)
+    private fun downloadMovieDetails(movie: Movie) {
+        val detailsCall = apiService.loadMovieDetails(movie.movieId)
         detailsCall.enqueue(object : Callback<MovieDetails> {
             override fun onResponse(call: Call<MovieDetails>, response: Response<MovieDetails>) {
                 if (response.isSuccessful) {
-                    setMovieDetailsInMovie(response)
+                    setMovieDetailsInMovie(response, movie)
                 } else {
                     Log.e("Response", "Response MovieDetails is not successful")
                 }
@@ -66,7 +64,7 @@ class DetailRepository(private val application: Application) {
         })
     }
 
-    private fun setMovieDetailsInMovie(response: Response<MovieDetails>) {
+    private fun setMovieDetailsInMovie(response: Response<MovieDetails>, movie: Movie) {
         val details = response.body()
         details?.let {
             movie.poster = it.poster
@@ -87,8 +85,11 @@ class DetailRepository(private val application: Application) {
             if (movie.preview == null) {
                 movie.preview = it.posterUrlPreview
             }
-            executor.execute { database.movieDao().insert(movie) }
-            downloadElseData(movie.movieId)
+
+            scope.launch {
+                database.movieDao().insert(movie)
+                downloadElseData(movie.movieId)
+            }
         }
     }
 
@@ -121,9 +122,7 @@ class DetailRepository(private val application: Application) {
     }
 
     private fun insertFramesInDb(it: Frames) {
-        executor.execute {
-            database.framesDao().insertFrames(it)
-        }
+        scope.launch { database.framesDao().insertFrames(it) }
     }
 
     private fun downloadVideos(movieId: Long) {
@@ -148,7 +147,7 @@ class DetailRepository(private val application: Application) {
     }
 
     private fun insertVideosInDb(videos: Videos) {
-        executor.execute {
+        scope.launch {
             database.videosDao().insertVideos(videos)
         }
     }
@@ -188,7 +187,7 @@ class DetailRepository(private val application: Application) {
     }
 
     private fun insertFactsInDb(facts: Facts) {
-        executor.execute {
+        scope.launch {
             database.factsDao().insertFacts(facts)
         }
     }
@@ -215,7 +214,7 @@ class DetailRepository(private val application: Application) {
     }
 
     private fun insertSimilarsInDb(similars: Similars) {
-        executor.execute {
+        scope.launch {
             database.similarsDao().insertSimilars(similars)
         }
     }
@@ -241,7 +240,7 @@ class DetailRepository(private val application: Application) {
     }
 
     fun updateMovieInDb(movie: Movie) {
-        executor.execute {
+        scope.launch {
             val favorite = getFavoriteFromMovie(movie)
             if (movie.isFavourite) {
                 insertFavorite(favorite)

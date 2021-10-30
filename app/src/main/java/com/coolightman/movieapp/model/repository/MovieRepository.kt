@@ -10,7 +10,10 @@ import com.coolightman.movieapp.model.data.response.MoviesPage
 import com.coolightman.movieapp.model.db.MovieDatabase
 import com.coolightman.movieapp.model.enums.Top
 import com.coolightman.movieapp.model.network.ApiFactory
-import com.coolightman.movieapp.util.ExecutorService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,8 +22,10 @@ class MovieRepository(private val application: Application) {
 
     private val apiService = ApiFactory.getService()
     private val database = MovieDatabase.getDb(application)
-    private val executor = ExecutorService.getExecutor()
-    private val handler = ExecutorService.getHandler()
+
+    private val parentJob = Job()
+    private val coroutineContext = parentJob + Dispatchers.IO
+    private val scope = CoroutineScope(coroutineContext)
 
     private var topPopularDownloadedPages = 0
     private var top250DownloadedPages = 0
@@ -48,7 +53,7 @@ class MovieRepository(private val application: Application) {
     }
 
     private fun getDownloadedPagesCount() {
-        executor.execute {
+        scope.launch {
             when (topType) {
                 Top.TOP_100_POPULAR_FILMS -> {
                     val size = database.movieDao().getAllPopularCount()
@@ -63,9 +68,7 @@ class MovieRepository(private val application: Application) {
                     topAwaitDownloadedPages = size / 20
                 }
             }
-            handler.post {
-                loadTopFirstData()
-            }
+            loadTopFirstData()
         }
     }
 
@@ -108,7 +111,7 @@ class MovieRepository(private val application: Application) {
     private fun setMoviesPageInDb(response: Response<MoviesPage>, page: Int) {
         val list = response.body()?.movies
         list?.let {
-            executor.execute {
+            scope.launch {
                 val updatedList = setAdditionalFields(it, page)
                 database.movieDao().insertList(updatedList)
                 resetDownloadedPage(page)
@@ -213,18 +216,20 @@ class MovieRepository(private val application: Application) {
     }
 
     fun refreshData() {
-        when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> executor.execute {
-                clearPopular()
-                handler.post { getTop(topType) }
-            }
-            Top.TOP_250_BEST_FILMS -> executor.execute {
-                clear250()
-                handler.post { getTop(topType) }
-            }
-            Top.TOP_AWAIT_FILMS -> executor.execute {
-                clearAwait()
-                handler.post { getTop(topType) }
+        scope.launch {
+            when (topType) {
+                Top.TOP_100_POPULAR_FILMS -> {
+                    clearPopular()
+                    getTop(topType)
+                }
+                Top.TOP_250_BEST_FILMS -> {
+                    clear250()
+                    getTop(topType)
+                }
+                Top.TOP_AWAIT_FILMS -> {
+                    clearAwait()
+                    getTop(topType)
+                }
             }
         }
     }
