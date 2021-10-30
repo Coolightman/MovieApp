@@ -35,23 +35,17 @@ class DetailRepository(private val application: Application) {
             if (movieDb != null) {
                 this.movie = movieDb
                 if (!movieDb.isDetailed) {
-                    downloadMovieData(movieId)
+                    downloadMovieDetails(movieId)
                 }
             } else {
                 this.movie = Movie(movieId)
-                downloadMovieData(movieId)
+                downloadMovieDetails(movieId)
             }
         }
     }
 
     private fun downloadMovieData(movieId: Long) {
         downloadMovieDetails(movieId)
-        handler.postDelayed({
-            downloadFrames(movieId)
-            downloadVideos(movieId)
-            downloadFacts(movieId)
-            downloadSimilars(movieId)
-        }, 100)
     }
 
     private fun downloadMovieDetails(movieId: Long) {
@@ -94,7 +88,15 @@ class DetailRepository(private val application: Application) {
                 movie.preview = it.posterUrlPreview
             }
             executor.execute { database.movieDao().insert(movie) }
+            downloadElseData(movie.movieId)
         }
+    }
+
+    private fun downloadElseData(movieId: Long) {
+        downloadFrames(movieId)
+        downloadVideos(movieId)
+        downloadFacts(movieId)
+        downloadSimilars(movieId)
     }
 
     private fun downloadFrames(movieId: Long) {

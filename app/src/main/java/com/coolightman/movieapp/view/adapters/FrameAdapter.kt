@@ -30,7 +30,7 @@ class FrameAdapter(private val listener: (Frame) -> Unit) :
         val imageViewFrame = holder.frameImg
 
         Glide.with(holder.itemView.context)
-            .load(frame.preview)
+            .load(frame.image)
             .placeholder(R.drawable.placeholder_image)
             .into(imageViewFrame)
 
