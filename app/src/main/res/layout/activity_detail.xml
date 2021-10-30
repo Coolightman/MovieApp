@@ -72,7 +72,6 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
-            app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNumberPopL"
             tools:visibility="visible" />
@@ -88,7 +87,7 @@
             app:layout_constraintEnd_toEndOf="@+id/textViewNumber250"
             app:layout_constraintStart_toStartOf="@+id/textViewNumber250"
             app:layout_constraintTop_toBottomOf="@+id/textViewNumber250"
-            tools:ignore="SmallSp"
+            tools:ignore="SmallSp,TextContrastCheck"
             tools:visibility="visible" />
 
         <TextView
@@ -107,7 +106,6 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
-            app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNumber250L"
             tools:visibility="visible" />

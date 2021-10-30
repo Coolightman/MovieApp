@@ -1,6 +1,7 @@
 package com.coolightman.movieapp.view.activities
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -46,10 +47,17 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
         val movieId = intent.getLongExtra("id", -1)
 
+        forLandscape()
         createObservingData(movieId)
         createAdapters()
         listeners()
         detailViewModel.loadMovieData(movieId)
+    }
+
+    private fun forLandscape() {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            supportActionBar?.hide()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
