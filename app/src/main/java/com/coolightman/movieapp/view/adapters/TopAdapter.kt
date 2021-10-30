@@ -89,9 +89,9 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
     private fun setRating(movie: Movie, holder: TopViewHolder) {
         val rating = movie.rating
         rating?.let {
-            holder.rating.text = rating
+            holder.rating.text = it
+            setRatingColor(holder.rating, it)
             holder.rating.visibility = VISIBLE
-            setRatingColor(holder.rating, rating)
         }
     }
 
@@ -99,7 +99,7 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
         when {
             rating.contains(Regex("^[7-9]")) -> view.setBackgroundResource(R.drawable.rounded_corner_green)
             rating.contains(Regex("^[56]")) -> view.setBackgroundResource(R.drawable.rounded_corner_grey)
-            rating.contains(Regex("^[1-4]")) -> view.setBackgroundResource(R.drawable.rounded_corner_red)
+            rating.contains(Regex("^[2-4]")) -> view.setBackgroundResource(R.drawable.rounded_corner_red)
         }
     }
 

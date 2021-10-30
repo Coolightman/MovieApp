@@ -138,12 +138,8 @@ class DetailActivity : AppCompatActivity() {
     private fun createFactsAdapter() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewFacts.layoutManager = layoutManager
-        factsAdapter = FactsAdapter { onFactClickListener(it) }
+        factsAdapter = FactsAdapter ()
         recyclerViewFacts.adapter = factsAdapter
-    }
-
-    private fun onFactClickListener(fact: Fact) {
-        Toast.makeText(this, "Big fact", Toast.LENGTH_SHORT).show()
     }
 
     private fun createSimilarsAdapter() {
@@ -293,7 +289,7 @@ class DetailActivity : AppCompatActivity() {
         when {
             rating.contains(Regex("^[7-9]")) -> view.setBackgroundResource(R.drawable.rounded_corner_green)
             rating.contains(Regex("^[56]")) -> view.setBackgroundResource(R.drawable.rounded_corner_grey)
-            rating.contains(Regex("^[1-4]")) -> view.setBackgroundResource(R.drawable.rounded_corner_red)
+            rating.contains(Regex("^[2-4]")) -> view.setBackgroundResource(R.drawable.rounded_corner_red)
         }
     }
 
@@ -363,7 +359,7 @@ class DetailActivity : AppCompatActivity() {
     private fun formatLength(length: Int): String {
         val hours = length / 60
         val minutes = length % 60
-        return "$hours:$minutes"
+        return String.format("%02d:%02d", hours, minutes)
     }
 
     private fun setCountries() {

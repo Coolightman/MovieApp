@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coolightman.movieapp.R
 import com.coolightman.movieapp.model.data.Fact
 
-class FactsAdapter(private val listener: (Fact) -> Unit) :
+class FactsAdapter() :
     RecyclerView.Adapter<FactsAdapter.FactViewHolder>() {
 
     private var facts = listOf<Fact>()
@@ -33,7 +33,6 @@ class FactsAdapter(private val listener: (Fact) -> Unit) :
             holder.warningSpoiler.visibility = VISIBLE
         }
         holder.factText.text = fact.text
-        holder.itemView.setOnClickListener { listener(fact) }
     }
 
     override fun getItemCount(): Int {
