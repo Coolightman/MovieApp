@@ -25,6 +25,7 @@ class DetailRepository(private val application: Application) {
     private val apiService = ApiFactory.getService()
     private val database = MovieDatabase.getDb(application)
     private val executor = ExecutorService.getExecutor()
+    private val handler = ExecutorService.getHandler()
 
     private lateinit var movie: Movie
 
@@ -45,10 +46,12 @@ class DetailRepository(private val application: Application) {
 
     private fun downloadMovieData(movieId: Long) {
         downloadMovieDetails(movieId)
-        downloadFrames(movieId)
-        downloadVideos(movieId)
-        downloadFacts(movieId)
-        downloadSimilars(movieId)
+        handler.postDelayed({
+            downloadFrames(movieId)
+            downloadVideos(movieId)
+            downloadFacts(movieId)
+            downloadSimilars(movieId)
+        }, 100)
     }
 
     private fun downloadMovieDetails(movieId: Long) {
@@ -83,11 +86,11 @@ class DetailRepository(private val application: Application) {
             movie.description = it.description
             movie.webUrl = it.webUrl
             movie.isDetailed = true
-            if (movie.rating == null){
+            if (movie.rating == null) {
                 movie.rating = it.ratingKinopoisk
                 movie.ratingCount = it.ratingKinopoiskVoteCount
             }
-            if (movie.preview == null){
+            if (movie.preview == null) {
                 movie.preview = it.posterUrlPreview
             }
             executor.execute { database.movieDao().insert(movie) }
@@ -173,8 +176,9 @@ class DetailRepository(private val application: Application) {
 
     private fun clearFacts(facts: Facts): List<Fact> {
         val cleanFacts = mutableListOf<Fact>()
-        for (fact in facts.items){
-            val cleanText = HtmlCompat.fromHtml(fact.text, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+        for (fact in facts.items) {
+            val cleanText =
+                HtmlCompat.fromHtml(fact.text, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
             fact.text = cleanText
             cleanFacts.add(fact)
         }
