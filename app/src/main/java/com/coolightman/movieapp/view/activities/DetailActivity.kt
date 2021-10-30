@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,11 +36,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var videoAdapter: VideoAdapter
     private lateinit var factsAdapter: FactsAdapter
     private lateinit var similarAdapter: SimilarAdapter
-
-    companion object {
-        const val POSTER_HEIGHT = 1100
-        const val POSTER_WIDTH = 740
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -242,8 +238,6 @@ class DetailActivity : AppCompatActivity() {
         Glide.with(this)
             .load(movie.poster)
             .placeholder(R.drawable.placeholder_image_poster)
-            .override(POSTER_WIDTH, POSTER_HEIGHT)
-            .centerCrop()
             .into(imageViewPoster)
     }
 

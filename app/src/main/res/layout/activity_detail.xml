@@ -12,16 +12,24 @@
 
         <ImageView
             android:id="@+id/imageViewPoster"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/content_descr_poster"
-            android:maxWidth="250dp"
-            android:maxHeight="360dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/placeholder_image_poster" />
+            tools:srcCompat="@drawable/ic_launcher_foreground" />
+
+        <View
+            android:id="@+id/infoBox"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#99000000"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewVotesCount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewNumberPop"
@@ -29,18 +37,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:paddingStart="6dp"
-            android:paddingTop="3dp"
+            android:paddingTop="0dp"
             android:paddingEnd="6dp"
-            android:paddingBottom="3dp"
-            android:text="@string/test_string"
             android:textSize="18sp"
-            android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/imageViewPoster"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="13"
             tools:visibility="visible" />
 
         <TextView
@@ -62,18 +66,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:paddingStart="6dp"
-            android:paddingTop="3dp"
+            android:paddingTop="0dp"
             android:paddingEnd="6dp"
-            android:paddingBottom="3dp"
-            android:text="@string/test_string"
             android:textSize="18sp"
-            android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNumberPopL"
+            app:layout_constraintStart_toEndOf="@+id/textViewNumberPop"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="13"
             tools:visibility="visible" />
 
         <TextView
@@ -96,18 +96,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:paddingStart="6dp"
-            android:paddingTop="3dp"
+            android:paddingTop="0dp"
             android:paddingEnd="6dp"
-            android:paddingBottom="3dp"
-            android:text="@string/test_string"
             android:textSize="18sp"
-            android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewPoster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNumber250L"
+            app:layout_constraintStart_toEndOf="@+id/textViewNumber250"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="13"
             tools:visibility="visible" />
 
         <TextView
@@ -127,9 +123,8 @@
             android:id="@+id/textViewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="10dp"
             android:background="#99000000"
             android:paddingStart="6dp"
             android:paddingTop="3dp"
@@ -137,10 +132,9 @@
             android:paddingBottom="3dp"
             android:text="@string/test_string"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintEnd_toEndOf="@id/imageViewPoster"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
@@ -160,11 +154,11 @@
             android:id="@+id/imageViewStar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@+id/textViewVotesCount"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewVotesCount"
+            app:layout_constraintEnd_toStartOf="@+id/textViewRating"
+            app:layout_constraintTop_toTopOf="@+id/textViewRating"
             app:srcCompat="@drawable/ic_baseline_star_36"
             tools:ignore="ContentDescription"
             tools:visibility="visible" />

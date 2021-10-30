@@ -22,7 +22,6 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
 
     class TopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val preview: ImageView = itemView.findViewById(R.id.imageViewPreview)
-        val number: TextView = itemView.findViewById(R.id.textViewNumberPop)
         val rating: TextView = itemView.findViewById(R.id.textViewRating)
         val favourite: ImageView = itemView.findViewById(R.id.imageViewFavourite)
     }
@@ -62,7 +61,6 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
 
     private fun setItemView(movie: Movie, holder: TopViewHolder) {
         setImage(movie, holder)
-        setNumber(movie, holder)
         setRating(movie, holder)
         setFavourite(movie, holder)
     }
@@ -73,17 +71,6 @@ class TopAdapter(private val listener: (Movie) -> Unit) :
             .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .into(holder.preview)
-    }
-
-    private fun setNumber(movie: Movie, holder: TopViewHolder) {
-        val number = when (topType) {
-            Top.TOP_100_POPULAR_FILMS -> "${movie.topPopularPlace}"
-            Top.TOP_250_BEST_FILMS -> "${movie.top250Place}"
-            Top.TOP_AWAIT_FILMS -> "${movie.topAwaitPlace}"
-        }
-        holder.number.setBackgroundResource(R.drawable.rounded_corner_number)
-        holder.number.visibility = VISIBLE
-        holder.number.text = number
     }
 
     private fun setRating(movie: Movie, holder: TopViewHolder) {

@@ -166,8 +166,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <include
-            layout="@layout/movie_info"/>
-
+            layout="@layout/movie_info" />
 
     </ScrollView>
 

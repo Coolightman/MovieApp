@@ -13,9 +13,9 @@
     <string name="text_view_videosL_text">Видео</string>
     <string name="text_view_factsL_text">Факты</string>
     <string name="text_view_similarsL_text">Похожие</string>
-    <string name="text_view_numberPopL_text">Популярн.</string>
-    <string name="text_view_number250L_text">Топ 250</string>
-    <string name="text_view_numberAwaitL_text">Ожидаем.</string>
+    <string name="text_view_numberPopL_text">Попул.</string>
+    <string name="text_view_number250L_text">Топ-250</string>
+    <string name="text_view_numberAwaitL_text">Ожид.</string>
     <string name="image_view_trailer_descr">trailer image</string>
     <string name="favorite_added">Убран из избранного</string>
     <string name="favorite_deleted">Добавлен в избранное</string>

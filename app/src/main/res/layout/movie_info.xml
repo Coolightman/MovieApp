@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewNameOrig"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -13,15 +13,15 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="@string/test_string"
             android:textSize="20sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="Sosna"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewNameRu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -29,15 +29,15 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="@string/test_string"
             android:textSize="20sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNameOrig"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="Сосна" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewSlogan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -45,15 +45,15 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="@string/test_string"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewNameRu"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="Мир, труд, май" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewYearL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -66,20 +66,20 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewSlogan"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewYear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:gravity="end"
-            android:text="@string/test_string"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewYearL"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="2020" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewLengthL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -92,20 +92,20 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewYearL"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewFilmLength"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:gravity="end"
-            android:text="@string/test_string"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewLengthL"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="00:00"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewGenreL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -118,20 +118,20 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewLengthL"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:gravity="end"
-            android:text="@string/test_string"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewGenreL"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="Боевичок" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewCountriesL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,20 +144,20 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewGenre"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewCountries"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:gravity="end"
-            android:text="@string/test_string"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewCountriesL"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="Беларусь" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -165,14 +165,14 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:paddingBottom="8dp"
-            android:text="@string/test_string"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewCountries"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:text="Bla-bla-bla"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewFrames"
@@ -181,12 +181,11 @@
             android:layout_marginTop="16dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewVideosL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -210,7 +209,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewVideosL"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewFactsL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -234,7 +233,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewFactsL"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewSimilarsL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -258,7 +257,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewSimilarsL"
             tools:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewKinopoisk"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

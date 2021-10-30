@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp">
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewPreview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,25 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/placeholder_image" />
 
-    <TextView
-        android:id="@+id/textViewNumberPop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="2dp"
-        android:paddingStart="4dp"
-        android:paddingTop="1dp"
-        android:paddingEnd="4dp"
-        android:paddingBottom="1dp"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:visibility="gone"
-        android:text="@string/test_string"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewPreview"
-        tools:visibility="visible"/>
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textViewRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,15 +32,15 @@
         android:paddingTop="1dp"
         android:paddingEnd="4dp"
         android:paddingBottom="1dp"
-        android:text="@string/test_string"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewPreview"
-        tools:visibility="visible"/>
+        app:layout_constraintEnd_toEndOf="@id/imageViewPreview"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="9.9"
+        tools:visibility="visible" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewFavourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,4 +53,5 @@
         app:tint="@android:color/holo_orange_light"
         tools:visibility="visible"
         android:contentDescription="@string/image_favorite_descr" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
