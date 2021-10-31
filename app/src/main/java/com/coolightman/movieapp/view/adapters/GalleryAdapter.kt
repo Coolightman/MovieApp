@@ -10,31 +10,27 @@ import com.bumptech.glide.Glide
 import com.coolightman.movieapp.R
 import com.coolightman.movieapp.model.data.Frame
 
-class FrameAdapter(private val listener: (Int) -> Unit) :
-    RecyclerView.Adapter<FrameAdapter.FrameViewHolder>() {
+class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>() {
     private var frames = listOf<Frame>()
 
-    class FrameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val frameImg: ImageView = itemView.findViewById(R.id.imageViewFrame)
+    class GalleryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val frameImg: ImageView = itemView.findViewById(R.id.imageViewGalleryImage)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FrameViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
         val view = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.frame_item, parent, false)
-        return FrameViewHolder(view)
+            .inflate(R.layout.gallery_frame_item, parent, false)
+        return GalleryViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: FrameViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
         val frame = frames[position]
-        val imageViewFrame = holder.frameImg
+        val image = holder.frameImg
 
         Glide.with(holder.itemView.context)
             .load(frame.image)
-            .placeholder(R.drawable.placeholder_image)
-            .into(imageViewFrame)
-
-        holder.itemView.setOnClickListener { listener(position) }
+            .into(image)
     }
 
     override fun getItemCount(): Int {

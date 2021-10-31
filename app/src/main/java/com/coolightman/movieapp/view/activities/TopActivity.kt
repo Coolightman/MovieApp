@@ -71,6 +71,10 @@ class TopActivity : AppCompatActivity() {
         recyclerViewTops.layoutManager = layoutManager
         topAdapter = TopAdapter { onItemClickListener(it) }
         recyclerViewTops.adapter = topAdapter
+
+//      remember position when rotate
+        topAdapter.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
 
     private fun getColumnCount(): Int {

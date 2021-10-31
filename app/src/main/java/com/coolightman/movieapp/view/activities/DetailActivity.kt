@@ -123,12 +123,15 @@ class DetailActivity : AppCompatActivity() {
     private fun createFrameAdapter() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewFrames.layoutManager = layoutManager
-        frameAdapter = FrameAdapter { onFrameItemClickListener() }
+        frameAdapter = FrameAdapter { onFrameItemClickListener(it) }
         recyclerViewFrames.adapter = frameAdapter
     }
 
-    private fun onFrameItemClickListener() {
-        Toast.makeText(this, "bigImage", Toast.LENGTH_SHORT).show()
+    private fun onFrameItemClickListener(position: Int) {
+        val intent = Intent(this, GalleryActivity::class.java)
+        intent.putExtra("movieId", movie.movieId)
+        intent.putExtra("position", position)
+        startActivity(intent)
     }
 
     private fun createFactsAdapter() {
