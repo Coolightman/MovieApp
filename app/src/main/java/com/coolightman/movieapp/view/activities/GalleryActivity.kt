@@ -2,6 +2,8 @@ package com.coolightman.movieapp.view.activities
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,11 @@ class GalleryActivity : AppCompatActivity() {
 
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var galleryAdapter: GalleryAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+
+    companion object {
+        private var prevPosition = -1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +46,19 @@ class GalleryActivity : AppCompatActivity() {
         val position = intent.getIntExtra("position", -1)
 
         createAdapter()
-        createObserver(movieId, position)
+        createObserver(movieId)
+
+//        fix rotate installing start layout position
+        if (position != prevPosition) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                layoutManager.scrollToPosition(position)
+                prevPosition = position
+            }, 10)
+        }
     }
 
     private fun createAdapter() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewGallery.layoutManager = layoutManager
         galleryAdapter = GalleryAdapter()
         recyclerViewGallery.adapter = galleryAdapter
@@ -57,14 +72,12 @@ class GalleryActivity : AppCompatActivity() {
         snapHelper.attachToRecyclerView(recyclerViewGallery)
     }
 
-    private fun createObserver(movieId: Long, position: Int) {
+    private fun createObserver(movieId: Long) {
         detailViewModel.getFrames(movieId).observe(this) {
             it?.let {
                 val items = it.frames
                 if (items.isNotEmpty()) {
                     galleryAdapter.setFrames(items)
-                    val layout = recyclerViewGallery.layoutManager
-                    layout?.scrollToPosition(position)
                 }
             }
         }
